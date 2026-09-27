@@ -1,11 +1,5 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import ComponentCatalog from "./components/ComponentCatalog";
 
 export default function DocsPage() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/docs/typography/typing");
-  }, [router]);
-  return null;
+  return <ComponentCatalog />;
 }

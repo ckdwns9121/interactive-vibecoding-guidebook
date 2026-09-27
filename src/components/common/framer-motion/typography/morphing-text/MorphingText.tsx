@@ -1,11 +1,14 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 
 interface MorphingTextProps {
+  /** 순서대로 모핑하며 반복할 문자열 배열입니다. 하나만 전달하면 정적으로 표시합니다. */
   texts: string[];
   morphTime?: number; // morph 애니메이션 시간(초)
   cooldownTime?: number; // 쿨다운 시간(초)
+  /** 모핑하는 두 텍스트에 적용할 CSS 색상입니다. */
   color?: string;
+  /** 모핑 영역의 글꼴 크기와 굵기 등을 설정할 CSS 클래스입니다. */
   className?: string;
 }
 
@@ -22,6 +25,7 @@ const MorphingText: React.FC<MorphingTextProps> = ({
   color = "#222",
   className,
 }) => {
+  const filterId = useId().replace(/:/g, "");
   const text1Ref = useRef<HTMLSpanElement>(null);
   const text2Ref = useRef<HTMLSpanElement>(null);
 
@@ -36,7 +40,20 @@ const MorphingText: React.FC<MorphingTextProps> = ({
       text1: text1Ref.current!,
       text2: text2Ref.current!,
     };
-    if (!elts.text1 || !elts.text2) return;
+    if (!elts.text1 || !elts.text2 || texts.length === 0) return;
+    textIndex.current = texts.length - 1;
+    time.current = new Date();
+    morph.current = 0;
+    cooldown.current = Math.max(cooldownTime, 0.01);
+    let frame = 0;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || texts.length === 1) {
+      elts.text1.textContent = texts[0];
+      elts.text1.style.opacity = "1";
+      elts.text1.style.filter = "";
+      elts.text2.style.opacity = "0";
+      return;
+    }
 
     elts.text1.textContent = texts[textIndex.current % texts.length];
     elts.text2.textContent = texts[(textIndex.current + 1) % texts.length];
@@ -56,9 +73,9 @@ const MorphingText: React.FC<MorphingTextProps> = ({
     function doMorph() {
       morph.current -= cooldown.current;
       cooldown.current = 0;
-      let fraction = morph.current / morphTime;
+      let fraction = morph.current / Math.max(morphTime, 0.01);
       if (fraction > 1) {
-        cooldown.current = cooldownTime;
+        cooldown.current = Math.max(cooldownTime, 0.01);
         fraction = 1;
       }
       setMorph(fraction);
@@ -73,7 +90,7 @@ const MorphingText: React.FC<MorphingTextProps> = ({
     }
 
     function animate() {
-      requestAnimationFrame(animate);
+      frame = requestAnimationFrame(animate);
       const newTime = new Date();
       const shouldIncrementIndex = cooldown.current > 0;
       const dt = (+newTime - +time.current) / 1000;
@@ -87,20 +104,27 @@ const MorphingText: React.FC<MorphingTextProps> = ({
       }
     }
     animate();
+    return () => cancelAnimationFrame(frame);
   }, [texts, morphTime, cooldownTime]);
 
   return (
     <div
       style={{
-        filter: "url(#threshold) blur(0.6px)",
+        filter: `url(#${filterId}) blur(0.6px)`,
       }}
+      role="img"
+      aria-label={texts.join(", ")}
       className={`${className} relative inline-block whitespace-nowrap`}
     >
       {/* SVG 필터 정의 */}
-      <svg className="hidden">
+      <svg width="0" height="0" aria-hidden="true" className="absolute">
         <defs>
-          <filter id="threshold">
-            <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140" />
+          <filter id={filterId}>
+            <feColorMatrix
+              in="SourceGraphic"
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"
+            />
           </filter>
         </defs>
       </svg>
@@ -120,7 +144,7 @@ const MorphingText: React.FC<MorphingTextProps> = ({
       />
       {/* 숨겨진 더미 텍스트로 컨테이너 크기 설정 */}
       <span className="font-sans opacity-0 select-none" aria-hidden="true">
-        {texts[0] || ""}
+        {texts.reduce((longest, text) => (text.length > longest.length ? text : longest), "")}
       </span>
     </div>
   );

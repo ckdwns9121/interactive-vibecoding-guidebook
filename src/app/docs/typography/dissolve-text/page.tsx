@@ -1,54 +1,14 @@
 "use client";
-import dissolveTextCode from "@/components/common/framer-motion/typography/dissolve-text/DissolveText.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import DissolveText from "@/components/common/framer-motion/typography/dissolve-text/DissolveText";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
 import { DISSOLVE_DEFAULTS, FONT_SIZE_OPTIONS, FONT_WEIGHT_OPTIONS, COLOR_PRESETS } from "./constants";
-
-const usageExample = `import DissolveText from "@/components/common/framer-motion/typography/dissolve-text/DissolveText";
-
-// 기본 사용법 (호버 시 디졸브)
-<DissolveText text="DISSOLVE" />
-
-// 큰 덩어리로 흩어지는 효과
-<DissolveText
-  text="DUST"
-  baseFrequency={0.02}
-  numOctaves={2}
-  duration={2000}
-  color="#a78bfa"
-  className="text-8xl font-black"
-/>
-
-// 미세하게 흩어지는 효과
-<DissolveText
-  text="PIXEL"
-  baseFrequency={0.08}
-  numOctaves={5}
-  duration={800}
-  color="#f472b6"
-  className="text-6xl font-bold"
-/>
-
-// 외부에서 progress 직접 제어
-const [progress, setProgress] = useState(0);
-<DissolveText
-  text="CONTROL"
-  progress={progress}
-  color="#34d399"
-  className="text-7xl font-black"
-/>
-<input
-  type="range" min={0} max={1} step={0.01}
-  value={progress}
-  onChange={(e) => setProgress(Number(e.target.value))}
-/>`;
 
 export default function DissolveTextPage() {
   const [text, setText] = useState(DISSOLVE_DEFAULTS.text);
@@ -62,118 +22,115 @@ export default function DissolveTextPage() {
   const [manualProgress, setManualProgress] = useState(0);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <ControlField label="Text" description="표시할 텍스트">
-            <input
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              placeholder="DISSOLVE"
-            />
-          </ControlField>
-          <RangeWithNumber
-            label="Base Frequency"
-            description="노이즈 주파수 (낮을수록 큰 덩어리)"
-            value={baseFrequency}
-            onChange={setBaseFrequency}
-            min={0.005}
-            max={0.15}
-            step={0.005}
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ControlField label="Text" description="표시할 텍스트">
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+            placeholder="DISSOLVE"
           />
-          <RangeWithNumber
-            label="Num Octaves"
-            description="노이즈 디테일 (1~8)"
-            value={numOctaves}
-            onChange={setNumOctaves}
-            min={1}
-            max={8}
-            step={1}
-          />
-          <RangeWithNumber
-            label="Duration"
-            description="디졸브 애니메이션 시간 (ms)"
-            value={duration}
-            onChange={setDuration}
-            min={200}
-            max={3000}
-            step={100}
-          />
-          <ControlField label="Hover Trigger" description="호버 시 자동 디졸브">
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => setHoverTrigger(!hoverTrigger)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
-                  hoverTrigger ? "bg-blue-600" : "bg-gray-600"
+        </ControlField>
+        <RangeWithNumber
+          label="Base Frequency"
+          description="노이즈 주파수 (낮을수록 큰 덩어리)"
+          value={baseFrequency}
+          onChange={setBaseFrequency}
+          min={0.005}
+          max={0.15}
+          step={0.005}
+        />
+        <RangeWithNumber
+          label="Num Octaves"
+          description="노이즈 디테일 (1~8)"
+          value={numOctaves}
+          onChange={setNumOctaves}
+          min={1}
+          max={8}
+          step={1}
+        />
+        <RangeWithNumber
+          label="Duration"
+          description="디졸브 애니메이션 시간 (ms)"
+          value={duration}
+          onChange={setDuration}
+          min={200}
+          max={3000}
+          step={100}
+        />
+        <ControlField label="Hover Trigger" description="호버 시 자동 디졸브">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setHoverTrigger(!hoverTrigger)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                hoverTrigger ? "bg-blue-600" : "bg-gray-600"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                  hoverTrigger ? "translate-x-6" : "translate-x-0"
                 }`}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
-                    hoverTrigger ? "translate-x-6" : "translate-x-0"
-                  }`}
-                />
-              </button>
-              <span className="text-sm text-gray-300">{hoverTrigger ? "ON" : "OFF"}</span>
-            </div>
-          </ControlField>
-          {!hoverTrigger && (
-            <RangeWithNumber
-              label="Progress"
-              description="디졸브 진행도 (0~1)"
-              value={manualProgress}
-              onChange={setManualProgress}
-              min={0}
-              max={1}
-              step={0.01}
-            />
-          )}
-          <ColorField
-            label="Text Color"
-            description="텍스트 색상"
-            value={color}
-            onChange={setColor}
-            presets={COLOR_PRESETS}
+              />
+            </button>
+            <span className="text-sm text-gray-300">{hoverTrigger ? "ON" : "OFF"}</span>
+          </div>
+        </ControlField>
+        {!hoverTrigger && (
+          <RangeWithNumber
+            label="Progress"
+            description="디졸브 진행도 (0~1)"
+            value={manualProgress}
+            onChange={setManualProgress}
+            min={0}
+            max={1}
+            step={0.01}
           />
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-        </div>
+        )}
+        <ColorField
+          label="Text Color"
+          description="텍스트 색상"
+          value={color}
+          onChange={setColor}
+          presets={COLOR_PRESETS}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setText(DISSOLVE_DEFAULTS.text);
-              setBaseFrequency(DISSOLVE_DEFAULTS.baseFrequency);
-              setNumOctaves(DISSOLVE_DEFAULTS.numOctaves);
-              setDuration(DISSOLVE_DEFAULTS.duration);
-              setHoverTrigger(DISSOLVE_DEFAULTS.hoverTrigger);
-              setColor(DISSOLVE_DEFAULTS.color);
-              setFontSize(DISSOLVE_DEFAULTS.fontSize);
-              setFontWeight(DISSOLVE_DEFAULTS.fontWeight);
-              setManualProgress(0);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setText(DISSOLVE_DEFAULTS.text);
+            setBaseFrequency(DISSOLVE_DEFAULTS.baseFrequency);
+            setNumOctaves(DISSOLVE_DEFAULTS.numOctaves);
+            setDuration(DISSOLVE_DEFAULTS.duration);
+            setHoverTrigger(DISSOLVE_DEFAULTS.hoverTrigger);
+            setColor(DISSOLVE_DEFAULTS.color);
+            setFontSize(DISSOLVE_DEFAULTS.fontSize);
+            setFontWeight(DISSOLVE_DEFAULTS.fontWeight);
+            setManualProgress(0);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -195,8 +152,23 @@ export default function DissolveTextPage() {
           />
         </div>
       }
-      usage={usageExample}
-      code={dissolveTextCode}
+      usage={generateUsage(
+        usageElement("div", { className: "h-48 flex items-center justify-center" }, [
+          usageElement("DissolveText", {
+            text: text,
+            baseFrequency: baseFrequency,
+            numOctaves: numOctaves,
+            duration: duration,
+            hoverTrigger: hoverTrigger,
+            progress: hoverTrigger ? undefined : manualProgress,
+            color: color,
+            className: `${fontSize} ${fontWeight}`,
+          }),
+        ]),
+        [
+          'import DissolveText from "@/components/common/framer-motion/typography/dissolve-text/DissolveText";',
+        ],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "사용자가 텍스트 위에 마우스를 올리거나, progress 값이 변경될 때",

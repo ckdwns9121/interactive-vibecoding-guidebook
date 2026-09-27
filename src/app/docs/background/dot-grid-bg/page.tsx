@@ -1,5 +1,5 @@
 "use client";
-import componentCode from "@/components/common/framer-motion/background/dot-grid-bg/DotGridBG.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import DotGridBG from "@/components/common/framer-motion/background/dot-grid-bg/DotGridBG";
@@ -8,55 +8,15 @@ import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumb
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-import {
-  DOT_GRID_DEFAULTS,
-  COLOR_PRESETS,
-  BG_COLOR_PRESETS,
-} from "./constants";
-
-const usageExample = `import DotGridBG from "@/components/common/framer-motion/background/dot-grid-bg/DotGridBG";
-
-// 기본 사용법
-<div className="relative h-64 bg-gradient-to-b from-gray-900 to-black">
-  <DotGridBG />
-</div>
-
-// children과 함께 사용
-<div className="relative h-96 bg-gradient-to-b from-indigo-950 to-gray-950">
-  <DotGridBG
-    dotColor="#818cf8"
-    interactionRadius={150}
-    maxDotScale={4}
-    showLines={true}
-    lineOpacity={0.2}
-  >
-    <div className="flex items-center justify-center h-full">
-      <h1 className="text-4xl font-bold text-white">Hello World</h1>
-    </div>
-  </DotGridBG>
-</div>
-
-// 라인 없이 사용
-<DotGridBG
-  dotColor="#f472b6"
-  dotSpacing={20}
-  showLines={false}
-  maxDotScale={5}
-/>`;
+import { DOT_GRID_DEFAULTS, COLOR_PRESETS, BG_COLOR_PRESETS } from "./constants";
 
 export default function DotGridBGPage() {
   const [dotSize, setDotSize] = useState(DOT_GRID_DEFAULTS.dotSize);
   const [dotSpacing, setDotSpacing] = useState(DOT_GRID_DEFAULTS.dotSpacing);
-  const [interactionRadius, setInteractionRadius] = useState(
-    DOT_GRID_DEFAULTS.interactionRadius
-  );
-  const [maxDotScale, setMaxDotScale] = useState(
-    DOT_GRID_DEFAULTS.maxDotScale
-  );
+  const [interactionRadius, setInteractionRadius] = useState(DOT_GRID_DEFAULTS.interactionRadius);
+  const [maxDotScale, setMaxDotScale] = useState(DOT_GRID_DEFAULTS.maxDotScale);
   const [showLines, setShowLines] = useState(DOT_GRID_DEFAULTS.showLines);
-  const [lineOpacity, setLineOpacity] = useState(
-    DOT_GRID_DEFAULTS.lineOpacity
-  );
+  const [lineOpacity, setLineOpacity] = useState(DOT_GRID_DEFAULTS.lineOpacity);
   const [dotColor, setDotColor] = useState(DOT_GRID_DEFAULTS.dotColor);
   const [bgGradient, setBgGradient] = useState(BG_COLOR_PRESETS[0].value);
 
@@ -76,9 +36,7 @@ export default function DotGridBGPage() {
       title="Dot Grid Background"
       description="HTML5 Canvas 기반의 인터랙티브 도트 그리드 배경입니다. 마우스 커서 근처의 점들이 커지고 연결선이 나타나며 네트워크 효과를 만들어냅니다."
       preview={
-        <div
-          className={`relative h-64 rounded-lg overflow-hidden bg-gradient-to-b ${bgGradient}`}
-        >
+        <div className={`relative h-64 rounded-lg overflow-hidden bg-gradient-to-b ${bgGradient}`}>
           <DotGridBG
             key={`${dotSize}-${dotSpacing}-${interactionRadius}-${maxDotScale}-${showLines}-${lineOpacity}-${dotColor}`}
             dotSize={dotSize}
@@ -99,8 +57,38 @@ export default function DotGridBGPage() {
           </DotGridBG>
         </div>
       }
-      usage={usageExample}
-      code={componentCode}
+      usage={generateUsage(
+        usageElement(
+          "div",
+          { className: `relative h-64 rounded-lg overflow-hidden bg-gradient-to-b ${bgGradient}` },
+          [
+            usageElement(
+              "DotGridBG",
+              {
+                dotSize: dotSize,
+                dotColor: dotColor,
+                dotSpacing: dotSpacing,
+                interactionRadius: interactionRadius,
+                maxDotScale: maxDotScale,
+                showLines: showLines,
+                lineColor: dotColor,
+                lineOpacity: lineOpacity,
+                className: "w-full h-full",
+              },
+              [
+                usageElement("div", { className: "flex items-center justify-center h-64" }, [
+                  usageElement(
+                    "p",
+                    { className: "text-white/60 text-lg font-medium tracking-widest uppercase select-none" },
+                    [usageText("Move your mouse")],
+                  ),
+                ]),
+              ],
+            ),
+          ],
+        ),
+        ['import DotGridBG from "@/components/common/framer-motion/background/dot-grid-bg/DotGridBG";'],
+      )}
       controls={
         <>
           <RangeWithNumber

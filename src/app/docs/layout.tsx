@@ -1,61 +1,104 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import DocsSidebar from "./components/DocsSidebar";
+import DocsSearch from "./components/DocsSearch";
+import DocsRail from "./components/DocsRail";
+import { DocsPreferences } from "./components/DocsPreferences";
+import DemoReset from "./components/DemoReset";
+import "./docs.css";
 
 export default function DocsPageLayout({ children }: { children: React.ReactNode }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const element = dialog.current;
+    element?.showModal();
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const resize = () => {
+      if (window.innerWidth >= 768) setOpen(false);
+    };
+    window.addEventListener("resize", resize);
+    return () => {
+      element?.close();
+      document.body.style.overflow = oldOverflow;
+      window.removeEventListener("resize", resize);
+    };
+  }, [open]);
   return (
-    <div className="flex min-h-screen">
-      {/* Hamburger Menu for Mobile */}
-      <button
-        type="button"
-        className="fixed top-5 left-4 z-50 rounded-md bg-gray-800 p-2 text-white md:hidden"
-        onClick={() => setSidebarOpen(!isSidebarOpen)}
-        aria-label="Open sidebar"
-      >
-        <svg
-          className="h-6 w-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+    <DocsPreferences>
+      <div className="docs-shell">
+        <a href="#docs-content" className="docs-skip">
+          본문으로 건너뛰기
+        </a>
+        <header className="docs-header">
+          <div className="docs-header-left">
+            <Link href="/docs" className="docs-brand">
+              <span className="docs-brand-mark" aria-hidden="true">
+                ✳
+              </span>
+              Interaction Guide
+            </Link>
+            <span className="docs-header-divider">/</span>
+            <Link href="/docs" className="docs-header-link docs-header-link-active">
+              Docs
+            </Link>
+            <Link href="/docs/typography/playground" className="docs-header-link">
+              Playground
+            </Link>
+          </div>
+          <div className="docs-header-right">
+            <DocsSearch />
+            <Link href="/docs/getting-started" className="docs-header-cta">
+              시작하기 ↗
+            </Link>
+            <button
+              type="button"
+              className="docs-button docs-mobile-toggle"
+              onClick={() => setOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+            >
+              메뉴
+            </button>
+          </div>
+        </header>
+        <aside className="docs-sidebar">
+          <DocsSidebar />
+        </aside>
+        <dialog
+          ref={dialog}
+          className="docs-mobile-nav"
+          aria-label="문서 탐색 메뉴"
+          onCancel={() => setOpen(false)}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setOpen(false);
+          }}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d={isSidebarOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
-          />
-        </svg>
-      </button>
-
-      {/* Sidebar - Fixed on left */}
-      <aside
-        className={`
-          fixed top-0 left-0 z-40 h-screen w-[260px] bg-[#18181b] p-8 pr-4 text-white
-          transform transition-transform duration-300 ease-in-out overflow-y-auto scrollbar-hide
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0 
-        `}
-      >
-        <DocsSidebar />
-      </aside>
-
-      {/* Overlay for mobile */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black opacity-50 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* 우측 상세 컨텐츠 */}
-      <main className="flex-1 ml-0 md:ml-[260px] px-4 py-24">
-        <div className="mx-auto max-w-[900px]">{children}</div>
-      </main>
-    </div>
+          <div className="docs-mobile-heading">
+            <span>Interaction Guide</span>
+            <button type="button" className="docs-button" onClick={() => setOpen(false)}>
+              닫기 ×
+            </button>
+          </div>
+          <DocsSidebar onNavigate={() => setOpen(false)} />
+        </dialog>
+        <div className="docs-body">
+          <main id="docs-content" tabIndex={-1} className="docs-main">
+            <DemoReset key={pathname}>{children}</DemoReset>
+            <footer className="docs-footer">
+              <span>Interaction Guide</span>
+              <span>직접 만들고, 움직여 보세요.</span>
+            </footer>
+          </main>
+          <DocsRail />
+        </div>
+      </div>
+    </DocsPreferences>
   );
 }

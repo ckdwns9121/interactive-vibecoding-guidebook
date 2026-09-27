@@ -10,9 +10,9 @@ export const StickyStackSections: React.FC<StickyStackSectionsProps> = ({ sectio
       {sections.map((section, index) => (
         <div
           key={section.id}
-          className="h-screen sticky top-0 h-[100vh]"
+          className="sticky top-0 h-screen"
           style={{
-            zIndex: sections.length - index, // 나중 섹션이 앞에 오도록
+            zIndex: index + 1, // 나중 섹션이 앞에 오도록
           }}
         >
           <motion.section

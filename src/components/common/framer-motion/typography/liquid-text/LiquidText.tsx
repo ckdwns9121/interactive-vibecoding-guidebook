@@ -2,7 +2,9 @@
 import { useEffect, useRef } from "react";
 
 interface LiquidTextProps {
+  /** 액체 왜곡 필터를 적용할 문자열입니다. */
   text: string;
+  /** 텍스트의 CSS 색상입니다. */
   color?: string;
   /** 왜곡 강도 (px) */
   scale?: number;
@@ -12,6 +14,7 @@ interface LiquidTextProps {
   speed?: number;
   /** 노이즈 디테일 레벨 */
   numOctaves?: number;
+  /** 텍스트 영역의 글꼴 크기와 굵기 등을 설정할 CSS 클래스입니다. */
   className?: string;
 }
 

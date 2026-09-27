@@ -3,12 +3,19 @@ import React, { useCallback, useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 
 interface GlitchTextProps {
+  /** 글리치 레이어에 반복해서 표시할 문자열입니다. */
   children: string;
+  /** 글리치 전환 시간의 배율입니다. 값이 클수록 한 번의 전환이 느려집니다. */
   speed?: number;
+  /** 네 가지 색상의 글리치 레이어를 표시할지 설정합니다. */
   enableShadows?: boolean;
+  /** true이면 마우스를 올린 동안만 글리치를 반복합니다. */
   enableOnHover?: boolean;
+  /** 텍스트와 글리치 레이어를 감싸는 span에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 네 개 글리치 레이어에 순서대로 적용할 CSS 색상 배열입니다. 색상 네 개를 전달하세요. */
   glitchColors?: string[];
+  /** 글리치 반복 사이의 기준 대기 시간(ms)입니다. 실제 간격은 무작위로 변합니다. */
   refreshDelay?: number;
 }
 

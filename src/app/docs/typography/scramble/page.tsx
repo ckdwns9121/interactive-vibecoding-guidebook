@@ -1,5 +1,5 @@
 "use client";
-import textScrambleCode from "@/components/common/framer-motion/typography/TextScramble.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 import { useState } from "react";
 import TextScramble from "@/components/common/framer-motion/typography/TextScramble";
 import ComponentDocPage from "../../components/ComponentDocPage";
@@ -8,32 +8,6 @@ import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumb
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-
-const usageExample = `import TextScramble from "@/components/common/framer-motion/typography/TextScramble";
-
-// 기본 사용법
-<TextScramble text="스크램블 효과" />
-
-// 커스텀 설정
-<TextScramble
-  text="고급 스크램블 효과입니다."
-  speed={30}
-  delay={500}
-  loop={true}
-  pauseTime={2000}
-  characters="!@#$%^&*()_+-=[]{}|;:,.<>?"
-  revealSpeed={150}
-  trigger="hover"
-  className="text-2xl font-bold"
-/>
-
-// 간단한 설정
-<TextScramble
-  text="Hello World!"
-  speed={50}
-  loop={true}
-  className="text-xl"
-/>`;
 
 const TEXT_COLOR_OPTIONS = [
   { value: "inherit", label: "inherit" },
@@ -76,7 +50,7 @@ export default function ScrambleTextPage() {
   const [loop, setLoop] = useState(true);
   const [pauseTime, setPauseTime] = useState(1000);
   const [characters, setCharacters] = useState(
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?",
   );
   const [revealSpeed, setRevealSpeed] = useState(100);
   const [trigger, setTrigger] = useState<"auto" | "hover" | "manual">("auto");
@@ -88,7 +62,7 @@ export default function ScrambleTextPage() {
       title="스크램블 텍스트"
       description="텍스트가 스크램블되는 애니메이션 효과를 적용합니다."
       preview={
-        <div className="min-h-32 md:min-h-40 flex items-center justify-center">
+        <div className="min-h-32 md:min-h-40 flex items-center justify-center" style={{ color: textColor }}>
           <TextScramble
             text={text}
             speed={speed}
@@ -98,14 +72,33 @@ export default function ScrambleTextPage() {
             characters={characters}
             revealSpeed={revealSpeed}
             trigger={trigger}
-            className={`${VARIANT_CLASSES[variant] ?? VARIANT_CLASSES.h3} ${
-              textColor === "inherit" ? "" : `text-[${textColor}]`
-            }`}
+            className={VARIANT_CLASSES[variant] ?? VARIANT_CLASSES.h3}
           />
         </div>
       }
-      usage={usageExample}
-      code={textScrambleCode}
+      usage={generateUsage(
+        usageElement(
+          "div",
+          {
+            className: "min-h-32 md:min-h-40 flex items-center justify-center",
+            style: { color: textColor },
+          },
+          [
+            usageElement("TextScramble", {
+              text: text,
+              speed: speed,
+              delay: delay,
+              loop: loop,
+              pauseTime: pauseTime,
+              characters: characters,
+              revealSpeed: revealSpeed,
+              trigger: trigger,
+              className: VARIANT_CLASSES[variant] ?? VARIANT_CLASSES.h3,
+            }),
+          ],
+        ),
+        ['import TextScramble from "@/components/common/framer-motion/typography/TextScramble";'],
+      )}
       controls={
         <>
           <TextAreaField

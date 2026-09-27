@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Browser verification artifacts
+/test-results/
+/playwright-report/
+
+# Local agent workflow and generated evidence
+/.omx/

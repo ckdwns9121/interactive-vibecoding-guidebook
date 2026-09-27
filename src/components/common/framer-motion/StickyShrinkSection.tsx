@@ -4,6 +4,7 @@ import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef, ReactNode } from "react";
 
 interface StickyShrinkSectionProps {
+  /** 스크롤하면서 축소되는 고정 영역 안에 표시할 React 콘텐츠입니다. */
   children: ReactNode;
   /**
    * 최종 축소 비율 (기본값: 0.8)

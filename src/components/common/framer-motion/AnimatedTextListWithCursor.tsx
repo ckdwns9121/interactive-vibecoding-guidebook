@@ -9,13 +9,21 @@ interface CityItem {
 }
 
 interface AnimatedTextListWithCursorProps {
+  /** 목록 항목 배열입니다. code는 식별자와 표시 코드, name은 이름, img는 커서 이미지 경로입니다. */
   cities?: CityItem[];
+  /** 목록 텍스트 크기를 정하는 Tailwind 클래스입니다. */
   fontSize?: string;
+  /** 목록 이름의 글꼴 굵기를 정하는 Tailwind 클래스입니다. */
   fontWeight?: string;
+  /** 목록 이름의 글자 색상을 정하는 Tailwind 클래스입니다. */
   textColor?: string;
+  /** 항목 코드의 글자 색상을 정하는 Tailwind 클래스입니다. */
   codeColor?: string;
+  /** 세로 목록 항목 사이 간격을 정하는 Tailwind 클래스입니다. */
   gap?: string;
+  /** 커서를 따라가는 이미지의 너비와 높이를 정하는 Tailwind 클래스입니다. */
   imageSize?: string;
+  /** 커서 이미지의 모서리 둥글기를 정하는 Tailwind 클래스입니다. */
   borderRadius?: string;
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import text3DCode from "@/components/common/framer-motion/typography/Text3D.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 import { useState } from "react";
 import Text3D from "@/components/common/framer-motion/typography/Text3D";
 import ComponentDocPage from "../../components/ComponentDocPage";
@@ -7,65 +7,6 @@ import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumb
 import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-
-const usageExample = `import Text3D from "@/components/common/framer-motion/typography/Text3D";
-
-// 기본 사용법
-<Text3D
-  text="3D TEXT"
-  fontSize={80}
-  rotateAngle={20}
-  skewAngle={-20}
-  baseColor="#ffffff"
-  shadowColor1="#51B3A3"
-  shadowColor2="#389788"
-  shadowColor3="#7ee5d6"
-  backgroundColor="#59C4B4"
-  shadowDepth={90}
-  shadowOffsetX={1}
-  shadowOffsetY={1}
-  shadowBlur={0}
-  shadowSpread={1}
-  centered={false}
-/>
-
-// 커스텀 설정
-<Text3D
-  text="CUSTOM 3D"
-  fontSize={120}
-  rotateAngle={15}
-  skewAngle={-15}
-  baseColor="#ff6b6b"
-  shadowColor1="#e74c3c"
-  shadowColor2="#c0392b"
-  shadowColor3="#ff8a80"
-  backgroundColor="#2c3e50"
-  shadowDepth={120}
-  shadowOffsetX={2}
-  shadowOffsetY={2}
-  shadowBlur={1}
-  shadowSpread={1.5}
-  centered={true}
-/>
-
-// 게임 스타일
-<Text3D
-  text="GAME OVER"
-  fontSize={100}
-  rotateAngle={25}
-  skewAngle={-25}
-  baseColor="#f39c12"
-  shadowColor1="#e67e22"
-  shadowColor2="#d35400"
-  shadowColor3="#f1c40f"
-  backgroundColor="#34495e"
-  shadowDepth={150}
-  shadowOffsetX={1.5}
-  shadowOffsetY={1.5}
-  shadowBlur={0}
-  shadowSpread={1.2}
-  centered={false}
-/>`;
 
 export default function Text3DPage() {
   const [text, setText] = useState("3D TEXT");
@@ -116,8 +57,37 @@ export default function Text3DPage() {
           </div>
         </div>
       }
-      usage={usageExample}
-      code={text3DCode}
+      usage={generateUsage(
+        usageElement("div", { className: "h-[50vh] flex items-center justify-center" }, [
+          usageElement(
+            "div",
+            {
+              className: "min-h-32 md:min-h-40 flex items-center justify-center",
+              style: { backgroundColor: centered ? backgroundColor : "transparent" },
+            },
+            [
+              usageElement("Text3D", {
+                text: text,
+                fontSize: fontSize,
+                rotateAngle: rotateAngle,
+                skewAngle: skewAngle,
+                baseColor: baseColor,
+                shadowColor1: shadowColor1,
+                shadowColor2: shadowColor2,
+                shadowColor3: shadowColor3,
+                backgroundColor: backgroundColor,
+                shadowDepth: shadowDepth,
+                shadowOffsetX: shadowOffsetX,
+                shadowOffsetY: shadowOffsetY,
+                shadowBlur: shadowBlur,
+                shadowSpread: shadowSpread,
+                centered: false,
+              }),
+            ],
+          ),
+        ]),
+        ['import Text3D from "@/components/common/framer-motion/typography/Text3D";'],
+      )}
       controls={
         <>
           <ControlField label="Text" description="표시할 텍스트">
@@ -156,7 +126,12 @@ export default function Text3DPage() {
             max={45}
             step={1}
           />
-          <ColorField label="Base Color" description="기본 텍스트 색상" value={baseColor} onChange={setBaseColor} />
+          <ColorField
+            label="Base Color"
+            description="기본 텍스트 색상"
+            value={baseColor}
+            onChange={setBaseColor}
+          />
           <ColorField
             label="Shadow Color 1"
             description="첫 번째 그림자 색상"

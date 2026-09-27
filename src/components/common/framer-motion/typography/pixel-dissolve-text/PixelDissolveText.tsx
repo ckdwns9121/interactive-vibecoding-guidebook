@@ -2,7 +2,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface PixelDissolveTextProps {
+  /** 픽셀화와 디졸브 필터를 적용할 문자열입니다. */
   text: string;
+  /** 텍스트의 CSS 색상입니다. */
   color?: string;
   /** 디졸브 진행도 (0: 온전, 1: 완전히 사라짐). 외부에서 제어할 때 사용 */
   progress?: number;
@@ -16,6 +18,7 @@ interface PixelDissolveTextProps {
   numOctaves?: number;
   /** 디졸브 애니메이션 시간 (ms) */
   duration?: number;
+  /** 텍스트 영역의 글꼴 크기와 굵기 등을 설정할 CSS 클래스입니다. */
   className?: string;
 }
 
@@ -83,7 +86,7 @@ const PixelDissolveText: React.FC<PixelDissolveTextProps> = ({
         scale.setAttribute("radius", `${radius}`);
       }
     },
-    [pixelSize]
+    [pixelSize],
   );
 
   // 호버 트리거: rAF로 SVG 직접 구동
@@ -139,13 +142,7 @@ const PixelDissolveText: React.FC<PixelDissolveTextProps> = ({
         <defs>
           <filter id={filterId.current} x="-10%" y="-10%" width="120%" height="120%">
             {/* 1) 픽셀화: feMorphology erode로 축소 → dilate로 확대하면 블록 느낌 */}
-            <feMorphology
-              ref={scaleRef}
-              in="SourceGraphic"
-              operator="dilate"
-              radius="0"
-              result="pixelated"
-            />
+            <feMorphology ref={scaleRef} in="SourceGraphic" operator="dilate" radius="0" result="pixelated" />
 
             {/* 2) 픽셀화된 결과를 평균 필터로 블러 처리해 모자이크 효과 강화 */}
             <feConvolveMatrix

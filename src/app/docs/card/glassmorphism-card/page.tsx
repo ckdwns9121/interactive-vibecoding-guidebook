@@ -1,5 +1,5 @@
 "use client";
-import componentCode from "@/components/common/framer-motion/card/glassmorphism-card/GlassmorphismCard.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import GlassmorphismCard from "@/components/common/framer-motion/card/glassmorphism-card/GlassmorphismCard";
@@ -8,40 +8,7 @@ import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumb
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-import {
-  GLASS_CARD_DEFAULTS,
-  BG_COLOR_PRESETS,
-  BACKDROP_PRESETS,
-} from "./constants";
-
-const usageExample = `import GlassmorphismCard from "@/components/common/framer-motion/card/glassmorphism-card/GlassmorphismCard";
-
-// 기본 사용법 — 진짜 유리 같은 카드
-<GlassmorphismCard>
-  <h3 className="text-white text-xl font-bold">Glass Card</h3>
-  <p className="text-white/70 mt-2">Frosted glass effect</p>
-</GlassmorphismCard>
-
-// 커스텀 설정
-<GlassmorphismCard
-  blurAmount={20}
-  bgOpacity={0.12}
-  bgColor="#818cf8"
-  enableTilt={true}
-  maxTilt={12}
-  edgeHighlight={0.5}
-  innerShadow={0.4}
-  noiseOpacity={0.04}
-  reflectionSize={300}
-  reflectionOpacity={0.2}
->
-  <h3 className="text-white text-xl font-bold">Custom Glass</h3>
-</GlassmorphismCard>
-
-// 틸트 비활성화 (정적 유리)
-<GlassmorphismCard enableTilt={false} enableReflection={false}>
-  <p className="text-white">Static glass card</p>
-</GlassmorphismCard>`;
+import { GLASS_CARD_DEFAULTS, BG_COLOR_PRESETS, BACKDROP_PRESETS } from "./constants";
 
 export default function GlassmorphismCardPage() {
   const [blurAmount, setBlurAmount] = useState(GLASS_CARD_DEFAULTS.blurAmount);
@@ -77,8 +44,10 @@ export default function GlassmorphismCardPage() {
       title="Glassmorphism Card."
       description="진짜 유리처럼 보이는 글래스모피즘 카드입니다. 방향성 엣지 하이라이트, 이중 반사(diffuse + specular), 3D 틸트, 내부 그림자, 표면 노이즈로 사실적인 유리 질감을 구현합니다."
       preview={
-        <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${backdrop}`}
-          style={{ minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div
+          className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${backdrop}`}
+          style={{ minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
           {/* 배경에 장식 요소 — 유리 효과가 잘 보이도록 */}
           <div className="absolute top-8 left-12 w-24 h-24 rounded-full bg-white/20 blur-sm" />
           <div className="absolute bottom-12 right-16 w-32 h-32 rounded-full bg-white/15 blur-sm" />
@@ -102,19 +71,69 @@ export default function GlassmorphismCardPage() {
             <div className="flex flex-col justify-between h-full">
               <div>
                 <h3 className="text-white text-xl font-bold tracking-tight">Glassmorphism</h3>
-                <p className="text-white/60 text-sm mt-1">
-                  Real glass effect
-                </p>
+                <p className="text-white/60 text-sm mt-1">Real glass effect</p>
               </div>
-              <p className="text-white/40 text-xs">
-                마우스를 움직여 반사와 틸트 효과를 확인하세요
-              </p>
+              <p className="text-white/40 text-xs">마우스를 움직여 반사와 틸트 효과를 확인하세요</p>
             </div>
           </GlassmorphismCard>
         </div>
       }
-      usage={usageExample}
-      code={componentCode}
+      usage={generateUsage(
+        usageElement(
+          "div",
+          {
+            className: `relative overflow-hidden rounded-xl bg-gradient-to-br ${backdrop}`,
+            style: { minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center" },
+          },
+          [
+            usageElement("div", {
+              className: "absolute top-8 left-12 w-24 h-24 rounded-full bg-white/20 blur-sm",
+            }),
+            usageElement("div", {
+              className: "absolute bottom-12 right-16 w-32 h-32 rounded-full bg-white/15 blur-sm",
+            }),
+            usageElement("div", {
+              className: "absolute top-1/2 left-1/3 w-16 h-16 rounded-full bg-yellow-300/20 blur-sm",
+            }),
+            usageElement(
+              "GlassmorphismCard",
+              {
+                blurAmount: blurAmount,
+                bgOpacity: bgOpacity,
+                bgColor: bgColor,
+                enableReflection: enableReflection,
+                reflectionSize: reflectionSize,
+                reflectionOpacity: reflectionOpacity,
+                enableTilt: enableTilt,
+                maxTilt: maxTilt,
+                edgeHighlight: edgeHighlight,
+                noiseOpacity: noiseOpacity,
+                innerShadow: innerShadow,
+                width: "w-80",
+                height: "h-52",
+              },
+              [
+                usageElement("div", { className: "flex flex-col justify-between h-full" }, [
+                  usageElement("div", {}, [
+                    usageElement("h3", { className: "text-white text-xl font-bold tracking-tight" }, [
+                      usageText("Glassmorphism"),
+                    ]),
+                    usageElement("p", { className: "text-white/60 text-sm mt-1" }, [
+                      usageText("Real glass effect"),
+                    ]),
+                  ]),
+                  usageElement("p", { className: "text-white/40 text-xs" }, [
+                    usageText("마우스를 움직여 반사와 틸트 효과를 확인하세요"),
+                  ]),
+                ]),
+              ],
+            ),
+          ],
+        ),
+        [
+          'import GlassmorphismCard from "@/components/common/framer-motion/card/glassmorphism-card/GlassmorphismCard";',
+        ],
+      )}
       controls={
         <>
           <RangeWithNumber
@@ -165,14 +184,19 @@ export default function GlassmorphismCardPage() {
           <ControlField label="BG Color" description="유리 틴트 색상">
             <div className="flex flex-wrap gap-2">
               {BG_COLOR_PRESETS.map((preset) => (
-                <button key={preset.value} onClick={() => setBgColor(preset.value)}
+                <button
+                  key={preset.value}
+                  onClick={() => setBgColor(preset.value)}
                   className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                     bgColor === preset.value
                       ? "border-blue-400 bg-blue-400/20 text-blue-300"
                       : "border-gray-600 text-gray-300 hover:border-gray-400"
-                  }`}>
-                  <span className="inline-block w-2 h-2 rounded-full mr-1"
-                    style={{ backgroundColor: preset.value }} />
+                  }`}
+                >
+                  <span
+                    className="inline-block w-2 h-2 rounded-full mr-1"
+                    style={{ backgroundColor: preset.value }}
+                  />
                   {preset.label}
                 </button>
               ))}
@@ -189,9 +213,15 @@ export default function GlassmorphismCardPage() {
             <CheckboxField label="3D 틸트 사용" checked={enableTilt} onChange={setEnableTilt} />
             {enableTilt && (
               <div className="flex items-center space-x-3 mt-2">
-                <input type="range" min="2" max="20" step="1" value={maxTilt}
+                <input
+                  type="range"
+                  min="2"
+                  max="20"
+                  step="1"
+                  value={maxTilt}
                   onChange={(e) => setMaxTilt(Number(e.target.value))}
-                  className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                  className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
                 <span className="text-xs text-gray-400 w-10 text-right">{maxTilt}°</span>
               </div>
             )}
@@ -202,24 +232,38 @@ export default function GlassmorphismCardPage() {
               <>
                 <div className="flex items-center space-x-3 mt-2">
                   <span className="text-xs text-gray-400 w-8">크기</span>
-                  <input type="range" min="100" max="400" step="25" value={reflectionSize}
+                  <input
+                    type="range"
+                    min="100"
+                    max="400"
+                    step="25"
+                    value={reflectionSize}
                     onChange={(e) => setReflectionSize(Number(e.target.value))}
-                    className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
                   <span className="text-xs text-gray-400 w-10 text-right">{reflectionSize}px</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="text-xs text-gray-400 w-8">강도</span>
-                  <input type="range" min="0.05" max="0.35" step="0.05" value={reflectionOpacity}
+                  <input
+                    type="range"
+                    min="0.05"
+                    max="0.35"
+                    step="0.05"
+                    value={reflectionOpacity}
                     onChange={(e) => setReflectionOpacity(Number(e.target.value))}
-                    className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
                   <span className="text-xs text-gray-400 w-10 text-right">{reflectionOpacity}</span>
                 </div>
               </>
             )}
           </ControlField>
           <div className="space-y-2 flex items-end">
-            <button onClick={handleReset}
-              className="px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button
+              onClick={handleReset}
+              className="px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
               초기화
             </button>
           </div>

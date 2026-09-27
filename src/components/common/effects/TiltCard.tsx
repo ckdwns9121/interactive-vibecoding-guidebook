@@ -3,8 +3,11 @@ import { ReactNode, useRef, useState, useEffect, createContext, useContext } fro
 import { motion, useSpring, MotionValue, useTransform } from "framer-motion";
 
 interface TiltCardProps {
+  /** 회전하는 카드 안에 표시할 React 콘텐츠입니다. */
   children: ReactNode;
+  /** 원근감을 적용하는 바깥 컨테이너에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 카드 바깥 컨테이너의 너비·높이 등을 설정할 인라인 스타일입니다. */
   style?: React.CSSProperties;
   maxTilt?: number; // 최대 기울기 각도 (deg)
   parallaxFactor?: number; // parallax 깊이 기본값
@@ -32,7 +35,13 @@ export function useParallax(depth = 1) {
  * - 모바일에서는 효과 비활성화
  * - 자식에서 useParallax(depth)로 개별 parallax 적용 가능
  */
-export default function TiltCard({ children, className, style, maxTilt = 18, parallaxFactor = 0.25 }: TiltCardProps) {
+export default function TiltCard({
+  children,
+  className,
+  style,
+  maxTilt = 18,
+  parallaxFactor = 0.25,
+}: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 

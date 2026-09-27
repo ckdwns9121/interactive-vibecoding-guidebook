@@ -1,11 +1,10 @@
 "use client";
-import magneticCursorCode from "@/components/common/framer-motion/cursor/MagneticCursor.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import MagneticCursor from "@/components/common/framer-motion/cursor/MagneticCursor";
 import MagneticTargetBox from "@/components/common/framer-motion/cursor/MagneticTargetBox";
 import ComponentDocPage from "../../components/ComponentDocPage";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import {
@@ -17,49 +16,6 @@ import {
   FONT_SIZE_OPTIONS,
   FONT_WEIGHT_OPTIONS,
 } from "./constants";
-
-const usageExample = `import MagneticCursor from "@/components/common/framer-motion/cursor/MagneticCursor";
-import MagneticTargetBox from "@/components/common/framer-motion/cursor/MagneticTargetBox";
-
-// 기본 사용법
-<>
-  <MagneticCursor />
-  <div className="flex flex-wrap items-center justify-center gap-6">
-    <MagneticTargetBox>HOVER ME</MagneticTargetBox>
-    <MagneticTargetBox className="bg-red-600 text-white border-dashed border-white">
-      MAGNETIC
-    </MagneticTargetBox>
-  </div>
-</>
-
-// 커스텀 스타일링
-<>
-  <MagneticCursor />
-  <div className="flex flex-wrap items-center justify-center gap-8">
-    <MagneticTargetBox className="bg-blue-600 text-white border-solid border-yellow-400 text-xl font-bold">
-      INTERACT
-    </MagneticTargetBox>
-    <MagneticTargetBox className="bg-green-600 text-white border-dotted border-white text-lg">
-      EFFECT
-    </MagneticTargetBox>
-  </div>
-</>
-
-// 다양한 크기와 스타일
-<>
-  <MagneticCursor />
-  <div className="flex flex-wrap items-center justify-center gap-4">
-    <MagneticTargetBox className="w-32 h-32 bg-purple-600 text-white text-sm">
-      SMALL
-    </MagneticTargetBox>
-    <MagneticTargetBox className="w-48 h-24 bg-orange-500 text-white text-lg font-bold">
-      MEDIUM
-    </MagneticTargetBox>
-    <MagneticTargetBox className="w-64 h-20 bg-teal-600 text-white text-xl">
-      LARGE
-    </MagneticTargetBox>
-  </div>
-</>`;
 
 export default function MagneticCursorDocsPage() {
   // 컨트롤 상태
@@ -75,70 +31,103 @@ export default function MagneticCursorDocsPage() {
 
   // 컨트롤 패널
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* BOX TEXT */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">Box Text</label>
-            <p className="text-xs text-gray-400">박스에 표시될 텍스트</p>
-            <input
-              type="text"
-              value={boxText}
-              onChange={(e) => setBoxText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              placeholder="박스 텍스트를 입력하세요"
-            />
-          </div>
-
-          <RangeWithNumber
-            label="Box Width"
-            description="박스 너비 (px)"
-            value={boxWidth}
-            onChange={setBoxWidth}
-            min={100}
-            max={400}
-            step={10}
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* BOX TEXT */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">Box Text</label>
+          <p className="text-xs text-gray-400">박스에 표시될 텍스트</p>
+          <input
+            type="text"
+            value={boxText}
+            onChange={(e) => setBoxText(e.target.value)}
+            className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+            placeholder="박스 텍스트를 입력하세요"
           />
-          <RangeWithNumber
-            label="Box Height"
-            description="박스 높이 (px)"
-            value={boxHeight}
-            onChange={setBoxHeight}
-            min={50}
-            max={200}
-            step={10}
-          />
-          <SelectField label="Box Color" description="박스 배경 색상" value={boxColor} onChange={setBoxColor} options={BOX_COLOR_OPTIONS} />
-          <SelectField label="Text Color" description="텍스트 색상" value={textColor} onChange={setTextColor} options={TEXT_COLOR_OPTIONS} />
-          <SelectField label="Border Style" description="테두리 스타일" value={borderStyle} onChange={setBorderStyle} options={BORDER_STYLE_OPTIONS} />
-          <SelectField label="Border Color" description="테두리 색상" value={borderColor} onChange={setBorderColor} options={BORDER_COLOR_OPTIONS} />
-          <SelectField label="Font Size" description="텍스트 크기" value={fontSize} onChange={setFontSize} options={FONT_SIZE_OPTIONS} />
-          <SelectField label="Font Weight" description="글꼴 두께" value={fontWeight} onChange={setFontWeight} options={FONT_WEIGHT_OPTIONS} />
         </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setBoxWidth(MAGNETIC_CURSOR_DEFAULTS.boxWidth);
-              setBoxHeight(MAGNETIC_CURSOR_DEFAULTS.boxHeight);
-              setBoxText(MAGNETIC_CURSOR_DEFAULTS.boxText);
-              setBoxColor(MAGNETIC_CURSOR_DEFAULTS.boxColor);
-              setTextColor(MAGNETIC_CURSOR_DEFAULTS.textColor);
-              setBorderStyle(MAGNETIC_CURSOR_DEFAULTS.borderStyle);
-              setBorderColor(MAGNETIC_CURSOR_DEFAULTS.borderColor);
-              setFontSize(MAGNETIC_CURSOR_DEFAULTS.fontSize);
-              setFontWeight(MAGNETIC_CURSOR_DEFAULTS.fontWeight);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+        <RangeWithNumber
+          label="Box Width"
+          description="박스 너비 (px)"
+          value={boxWidth}
+          onChange={setBoxWidth}
+          min={100}
+          max={400}
+          step={10}
+        />
+        <RangeWithNumber
+          label="Box Height"
+          description="박스 높이 (px)"
+          value={boxHeight}
+          onChange={setBoxHeight}
+          min={50}
+          max={200}
+          step={10}
+        />
+        <SelectField
+          label="Box Color"
+          description="박스 배경 색상"
+          value={boxColor}
+          onChange={setBoxColor}
+          options={BOX_COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Text Color"
+          description="텍스트 색상"
+          value={textColor}
+          onChange={setTextColor}
+          options={TEXT_COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Border Style"
+          description="테두리 스타일"
+          value={borderStyle}
+          onChange={setBorderStyle}
+          options={BORDER_STYLE_OPTIONS}
+        />
+        <SelectField
+          label="Border Color"
+          description="테두리 색상"
+          value={borderColor}
+          onChange={setBorderColor}
+          options={BORDER_COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+      </div>
+
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setBoxWidth(MAGNETIC_CURSOR_DEFAULTS.boxWidth);
+            setBoxHeight(MAGNETIC_CURSOR_DEFAULTS.boxHeight);
+            setBoxText(MAGNETIC_CURSOR_DEFAULTS.boxText);
+            setBoxColor(MAGNETIC_CURSOR_DEFAULTS.boxColor);
+            setTextColor(MAGNETIC_CURSOR_DEFAULTS.textColor);
+            setBorderStyle(MAGNETIC_CURSOR_DEFAULTS.borderStyle);
+            setBorderColor(MAGNETIC_CURSOR_DEFAULTS.borderColor);
+            setFontSize(MAGNETIC_CURSOR_DEFAULTS.fontSize);
+            setFontWeight(MAGNETIC_CURSOR_DEFAULTS.fontWeight);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -164,15 +153,54 @@ export default function MagneticCursorDocsPage() {
               >
                 {boxText}
               </MagneticTargetBox>
-              <MagneticTargetBox className="bg-red-600 text-white border-dashed border-white">HOVER</MagneticTargetBox>
+              <MagneticTargetBox className="bg-red-600 text-white border-dashed border-white">
+                HOVER
+              </MagneticTargetBox>
               <MagneticTargetBox className="bg-green-600 text-white border-solid border-yellow-400">
                 INTERACT
               </MagneticTargetBox>
             </div>
           </div>
         }
-        usage={usageExample}
-        code={magneticCursorCode}
+        usage={generateUsage(
+          usageElement("div", {}, [
+            usageElement("MagneticCursor"),
+            usageElement("div", { className: "min-h-[40vh] flex items-center justify-center" }, [
+              usageElement("div", { className: "flex flex-wrap items-center justify-center gap-6" }, [
+                usageElement(
+                  "MagneticTargetBox",
+                  {
+                    style: {
+                      width: `${boxWidth}px`,
+                      height: `${boxHeight}px`,
+                      backgroundColor: boxColor,
+                      color: textColor,
+                      fontSize: fontSize,
+                      fontWeight: fontWeight,
+                      borderStyle: borderStyle,
+                      borderColor: borderColor,
+                    },
+                  },
+                  [usageText(boxText)],
+                ),
+                usageElement(
+                  "MagneticTargetBox",
+                  { className: "bg-red-600 text-white border-dashed border-white" },
+                  [usageText("HOVER")],
+                ),
+                usageElement(
+                  "MagneticTargetBox",
+                  { className: "bg-green-600 text-white border-solid border-yellow-400" },
+                  [usageText("INTERACT")],
+                ),
+              ]),
+            ]),
+          ]),
+          [
+            'import MagneticCursor from "@/components/common/framer-motion/cursor/MagneticCursor";',
+            'import MagneticTargetBox from "@/components/common/framer-motion/cursor/MagneticTargetBox";',
+          ],
+        )}
         controlPanel={controlPanel}
         idea={{
           when: "사용자가 마우스를 타겟 요소 위에 올렸을 때",

@@ -1,220 +1,71 @@
-# Interactive Guidebook
+# Interaction Guide
 
-모던 웹 인터랙션과 애니메이션을 위한 컴포넌트 라이브러리 및 가이드북입니다. Framer Motion, GSAP, Tailwind CSS를 활용하여 다양한 인터랙티브 요소들을 구현하고 문서화했습니다.
+React로 만든 인터랙션을 직접 조절하고 코드로 가져가는 한국어 컴포넌트 가이드북입니다. React Bits의 문서 흐름을 참고해 **Preview → Customize → Props → Dependencies**, **Code → Install → Usage → Source** 구조로 구성했습니다.
 
-## 🚀 주요 기능
+## 실행
 
-### Typography (타이포그래피)
-
-- **타이핑 텍스트**: 자연스러운 타이핑 애니메이션
-- **스크램블 텍스트**: 문자가 랜덤하게 섞이며 나타나는 효과
-- **마그네틱 텍스트**: 마우스에 반응하는 마그네틱 텍스트
-- **등장 텍스트**: 한 글자씩 등장하는 텍스트
-- **글리치 텍스트**: 글리치(Glitch) 스타일의 텍스트 애니메이션
-- **모프링 텍스트**: 모프링(Morphing) 스타일의 텍스트 애니메이션
-- **스크롤 마퀴 텍스트**: 스크롤 마크리(Scroll Marquee) 스타일의 텍스트 애니메이션
-- **스크롤 트리거 텍스트**: 스크롤에 반응하는 텍스트
-- **클립 텍스트**: 클립 효과가 적용된 텍스트
-- **3D 텍스트**: 깊이감 있는 그림자와 회전 효과의 3D 텍스트
-- **물감 채우기 텍스트**: 물감이 채워지는 듯한 텍스트 효과
-
-### Interaction (인터랙션)
-
-- **틸트 카드**: 마우스 움직임에 반응하는 3D 카드
-- **패럴럭스 이미지**: 스크롤에 따라 움직이는 패럴럭스 이미지
-- **스크롤 줌 배경**: 스크롤에 따라 배경이 줌 인/아웃 되는 효과
-- **스티키 축소 효과**: 스크롤에 따라 섹션이 축소되는 효과
-- **스크롤 포트폴리오 카드**: 세로 스크롤로 가로 카드가 슬라이드되는 효과
-- **스티키 스택 섹션**: 스크롤 시 섹션들이 상단에 고정되며 스택되는 효과
-- **다이나믹 아일랜드**: iOS Dynamic Island 스타일의 확장 가능한 인터랙티브 컴포넌트
-
-### Cursor (커서)
-
-- **커스텀 이미지 커서**: 텍스트에 호버 시 이미지가 나타나는 효과
-- **오버레이 커서**: 오버레이 형태의 커스텀 커서
-- **마그네틱 커서**: 마그네틱 효과가 적용된 커서
-
-### Background (배경)
-
-- **노이즈 그레인 배경**: 노이즈 그레인 텍스처가 적용된 배경 효과
-- **도트 그리드 배경**: 도트 그리드 패턴의 인터랙티브 배경
-
-### Card (카드)
-
-- **글래스모피즘 카드**: 유리 질감(Glassmorphism)의 반투명 카드
-
-## 🛠️ 기술 스택
-
-- **Framework**: Next.js 15.3.8 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **Animation**: Framer Motion, GSAP
-- **Testing**: Jest, React Testing Library
-- **UI Components**: Material-UI (MUI)
-- **Code Highlighting**: React Syntax Highlighter
-
-## 📦 설치 및 실행
-
-### 필수 요구사항
-
-- Node.js 18.0.0 이상
-- npm, yarn, pnpm 또는 bun
-
-### 설치
-
-```bash
-# 의존성 설치
-npm install
-# 또는
-yarn install
-# 또는
-pnpm install
-# 또는
-bun install
-```
-
-### 개발 서버 실행
-
-```bash
-# 개발 서버 시작
+```sh
+npm ci
 npm run dev
-# 또는
-yarn dev
-# 또는
-pnpm dev
-# 또는
-bun dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
+http://localhost:3000/docs 에서 시작합니다. React 19, Next.js 15.3.8, TypeScript, Tailwind CSS 4를 사용합니다. 실행 전 문서 메타데이터가 실제 컴포넌트 소스에서 생성됩니다.
 
-### 빌드 및 배포
+## 문서에서 할 수 있는 것
 
-```bash
-# 프로덕션 빌드
-npm run build
+- 5개 카테고리의 29개 예제 검색·필터링
+- `⌘K` / `Ctrl+K` 전체 검색, 모바일 메뉴, 키보드 탭 이동
+- 데모 재생, 설정 조절, 기본값 초기화
+- 현재 설정을 반영하는 복사용 TSX 예제
+- 실제 타입과 기본값을 반영하는 Props 표
+- npm·pnpm·yarn·bun 의존성 설치 명령
+- 컴포넌트뿐 아니라 함께 필요한 CSS·훅·타입 파일 확인·복사
+- 즐겨찾기 저장 및 `/docs/favorites`에서 다시 보기
+- `Copy for AI`로 사용 예제·Props·의존성·전체 소스를 한 번에 복사
 
-# 프로덕션 서버 시작
-npm run start
+`/`는 `/docs`로, `/playground`는 타이포그래피 플레이그라운드로 연결됩니다. 기존 컴포넌트 문서 URL은 유지합니다. CLI 레지스트리나 실제로 구현되지 않은 JS/CSS 변형을 제공하는 것처럼 표시하지 않습니다.
 
-# 린트 검사
+## 구조
+
+```text
+src/app/docs/
+  components/           문서 셸, 검색, 카탈로그, 공통 문서 템플릿
+  docs.css              문서 전용 디자인 토큰과 반응형 스타일
+  getting-started/       설치·활용 가이드
+  favorites/            브라우저에 저장한 즐겨찾기
+  typography/ ...       예제별 상태, 미리보기, 실시간 사용 예제
+src/components/common/  재사용할 실제 인터랙션 컴포넌트
+src/lib/docs/           검색 데이터 접근과 안전한 TSX 예제 생성
+src/data/component-docs.generated.json
+scripts/generate-docs-metadata.mjs
+```
+
+컴포넌트 구현이 API 문서의 기준입니다. 생성기는 TypeScript 컴파일러 API로 Props 타입·필수 여부·기본값·주석을 추출하고 로컬 import를 따라 관련 파일과 외부 의존성을 수집합니다. 생성된 JSON은 브라우저에서 파일 시스템 접근 없이 사용할 수 있습니다.
+
+새 예제를 추가할 때:
+
+1. 실제 컴포넌트와 Props 설명 주석을 작성합니다.
+2. `src/app/docs/components/menuTree.ts`에 경로와 설명을 추가합니다.
+3. 생성기의 `entries`에 기본 컴포넌트와 필요한 동반 컴포넌트를 등록합니다.
+4. 문서 페이지에서 `ComponentDocPage`와 공통 컨트롤을 사용합니다.
+5. `generateUsage` / `usageElement`로 미리보기와 같은 상태 값을 사용 예제에 전달합니다. 콜백이 필요한 경우 실제 동작하는 예제 함수를 명시합니다.
+6. `npm run docs:generate`와 아래 검증을 실행합니다.
+
+개발 중 컴포넌트 API/주석을 수정했다면 `npm run docs:generate`로 문서를 갱신합니다. 개발 서버 시작과 빌드에서는 자동으로 생성합니다. 스크롤 데모에는 `previewMode="scroll"`을 지정해 문서 스크롤을 유지합니다.
+
+## 검증
+
+```sh
 npm run lint
-
-# 테스트 실행
-npm run test
-
-# 테스트 감시 모드
-npm run test:watch
+npm test -- --runInBand
+npm run docs:check
+npm run build
+npx playwright install chromium
+npm run test:e2e
 ```
 
-## 📁 프로젝트 구조
+Playwright는 빌드된 앱을 로컬 3100 포트에서 실행해 문서 경로, 검색, 복사, 초기화, 즐겨찾기, 모바일 레이아웃과 스크롤 데모를 검사합니다. 캡처는 `.omx/artifacts/visual-ralph/react-bits/`에 남깁니다. 기존 서버를 검사할 때는 `PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 npm run test:e2e`를 사용할 수 있습니다.
 
-```
-interactive-guidebook/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── docs/              # 문서 페이지
-│   │   │   ├── typography/    # 타이포그래피 컴포넌트 문서
-│   │   │   ├── interaction/   # 인터랙션 컴포넌트 문서
-│   │   │   ├── cursor/        # 커서 컴포넌트 문서
-│   │   │   ├── background/    # 배경 컴포넌트 문서
-│   │   │   ├── card/          # 카드 컴포넌트 문서
-│   │   │   └── components/    # 문서 공통 컴포넌트
-│   │   ├── playground/        # 플레이그라운드
-│   │   └── globals.css        # 전역 스타일
-│   ├── components/            # 재사용 가능한 컴포넌트
-│   │   └── common/           # 공통 컴포넌트
-│   │       ├── docs-controls/ # 문서 데모 컨트롤 UI
-│   │       ├── effects/      # 효과 컴포넌트
-│   │       └── framer-motion/ # Framer Motion 컴포넌트
-│   │           ├── background/ # 배경 관련 컴포넌트
-│   │           ├── card/     # 카드 관련 컴포넌트
-│   │           ├── cursor/   # 커서 관련 컴포넌트
-│   │           └── typography/ # 타이포그래피 컴포넌트
-│   ├── hooks/                # 커스텀 훅
-│   ├── types/                # TypeScript 타입 정의
-│   ├── utils/                # 유틸리티 함수
-│   ├── data/                 # 샘플 데이터
-│   ├── constants/            # 상수 정의
-│   └── styles/               # 스타일 관련 모듈
-└── public/                   # 정적 파일
-```
+## 디자인과 참고
 
-## 🎨 디자인 시스템
-
-Tailwind CSS v4의 CSS-first 방식을 사용하며, 디자인 토큰은 별도 설정 파일 없이 `src/app/globals.css`의 `@theme` 블록에서 정의합니다.
-
-### 색상
-
-- **Background**: `#171717` (다크 배경)
-- **Foreground**: `#fff` (기본 텍스트)
-
-### 폰트
-
-- **Sans**: Pretendard (기본 폰트, 시스템 폰트 폴백 포함)
-
-### 반응형 브레이크포인트
-
-Tailwind CSS v4 기본 브레이크포인트(`sm` 640px ~ `2xl` 1536px)를 사용합니다.
-
-## 🔧 개발 가이드라인
-
-### 스타일링
-
-- Tailwind CSS v4 사용
-- 모바일 - 태블릿 - PC 순으로 반응형 고려
-- GSAP, Framer Motion, SVG 적극 활용
-- 스티키 섹션 사용 시 부모 요소에 `overflow-hidden` 금지
-
-### Next.js
-
-- `useState`, `useEffect` 사용 시 'use client' 명시
-- 문서 페이지(`page.tsx`)는 인터랙티브 데모 특성상 대부분 클라이언트 컴포넌트('use client')로 작성됨. 인터랙션이 없는 페이지는 서버 컴포넌트 유지
-- `window` 속성 사용 전 타입 체크 필수
-
-### 폴더 구조
-
-- `src/app/docs`: 개발한 컴포넌트의 문서 작성
-- `src/components`: 컴포넌트 폴더
-- `src/components/common`: 공용 컴포넌트
-
-## 🧪 테스트
-
-프로젝트는 Jest와 React Testing Library를 사용하여 테스트를 작성합니다.
-
-```bash
-# 모든 테스트 실행
-npm run test
-
-# 테스트 감시 모드
-npm run test:watch
-```
-
-## 📚 문서
-
-각 컴포넌트의 상세한 사용법과 예제는 `/docs` 경로에서 확인할 수 있습니다.
-
-- **Typography**: `/docs/typography/[component-name]`
-- **Interaction**: `/docs/interaction/[component-name]`
-- **Cursor**: `/docs/cursor/[component-name]`
-- **Background**: `/docs/background/[component-name]`
-- **Card**: `/docs/card/[component-name]`
-
-## 🤝 기여하기
-
-1. 이 저장소를 포크합니다
-2. 새로운 기능 브랜치를 생성합니다 (`git checkout -b feature/amazing-feature`)
-3. 변경사항을 커밋합니다 (`git commit -m 'Add some amazing feature'`)
-4. 브랜치에 푸시합니다 (`git push origin feature/amazing-feature`)
-5. Pull Request를 생성합니다
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
-
-## 🔗 관련 링크
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Framer Motion Documentation](https://www.framer.com/motion/)
-- [GSAP Documentation](https://greensock.com/docs/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+디자인 기준은 [DESIGN.md](./DESIGN.md)에 있습니다. React Bits의 공개 [문서](https://reactbits.dev/text-animations/split-text)와 [소스 구조](https://github.com/DavidHDev/react-bits)를 조사했으며, 기존 프로젝트의 컴포넌트와 한국어 설명을 유지해 문서 UI를 구현했습니다. 광고·Pro 서비스·React Bits 브랜드 자산은 포함하지 않습니다.

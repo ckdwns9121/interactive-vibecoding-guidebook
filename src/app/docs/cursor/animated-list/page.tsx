@@ -1,10 +1,9 @@
 "use client";
-import animatedListCode from "@/components/common/framer-motion/AnimatedTextListWithCursor.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import AnimatedTextListWithCursor from "@/components/common/framer-motion/AnimatedTextListWithCursor";
 import ComponentDocPage from "../../components/ComponentDocPage";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import {
   ANIMATED_LIST_DEFAULTS,
@@ -16,30 +15,6 @@ import {
   BORDER_RADIUS_OPTIONS,
   DEFAULT_IMAGES,
 } from "./constants";
-
-const usageExample = `import AnimatedTextListWithCursor from "@/components/common/framer-motion/AnimatedTextListWithCursor";
-
-// 기본 사용법
-const cities = [
-  { code: "01", name: "Tokyo", img: "/images/tokyo.jpg" },
-  { code: "02", name: "New York", img: "/images/newyork.jpg" },
-  { code: "03", name: "Paris", img: "/images/paris.jpg" },
-  { code: "04", name: "London", img: "/images/london.jpg" },
-];
-
-<AnimatedTextListWithCursor cities={cities} />
-
-// 커스텀 설정
-<AnimatedTextListWithCursor
-  cities={cities}
-  fontSize="text-2xl"
-  fontWeight="font-bold"
-  textColor="#ffffff"
-  codeColor="#666666"
-  gap="gap-6"
-  imageSize="w-24 h-24"
-  borderRadius="rounded-full"
-/>`;
 
 export default function AnimatedTextListPage() {
   // 컨트롤 상태
@@ -61,83 +36,125 @@ export default function AnimatedTextListPage() {
 
   // 컨트롤 패널
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* CITY ITEMS */}
-          <div className="space-y-4 md:col-span-2 lg:col-span-3">
-            <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">List Items</label>
-            <p className="text-xs text-gray-400">리스트 설정</p>
-            {cities.map((city, index) => (
-              <div key={index} className="grid gap-4 md:grid-cols-3 p-4 bg-black/20 rounded-lg border border-gray-700">
-                <div className="space-y-2">
-                  <label className="text-xs text-gray-300">Code</label>
-                  <input
-                    type="text"
-                    value={city.code}
-                    onChange={(e) => updateCity(index, "code", e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    placeholder="01"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs text-gray-300">Name</label>
-                  <input
-                    type="text"
-                    value={city.name}
-                    onChange={(e) => updateCity(index, "name", e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    placeholder="Tokyo"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs text-gray-300">Image</label>
-                  <select
-                    value={city.img}
-                    onChange={(e) => updateCity(index, "img", e.target.value)}
-                    className="w-full px-3 py-2 text-sm border border-gray-600 rounded bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    {DEFAULT_IMAGES.map((img) => (
-                      <option key={img} value={img} className="bg-gray-800 text-white">
-                        {img}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* CITY ITEMS */}
+        <div className="space-y-4 md:col-span-2 lg:col-span-3">
+          <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">List Items</label>
+          <p className="text-xs text-gray-400">리스트 설정</p>
+          {cities.map((city, index) => (
+            <div
+              key={index}
+              className="grid gap-4 md:grid-cols-3 p-4 bg-black/20 rounded-lg border border-gray-700"
+            >
+              <div className="space-y-2">
+                <label className="text-xs text-gray-300">Code</label>
+                <input
+                  type="text"
+                  value={city.code}
+                  onChange={(e) => updateCity(index, "code", e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="01"
+                />
               </div>
-            ))}
-          </div>
-
-          <SelectField label="Font Size" description="텍스트 크기" value={fontSize} onChange={setFontSize} options={FONT_SIZE_OPTIONS} />
-          <SelectField label="Font Weight" description="글꼴 두께" value={fontWeight} onChange={setFontWeight} options={FONT_WEIGHT_OPTIONS} />
-          <SelectField label="Text Color" description="메인 텍스트 색상" value={textColor} onChange={setTextColor} options={COLOR_OPTIONS} />
-          <SelectField label="Code Color" description="코드 텍스트 색상" value={codeColor} onChange={setCodeColor} options={COLOR_OPTIONS} />
-          <SelectField label="Gap" description="항목 간 간격" value={gap} onChange={setGap} options={GAP_OPTIONS} />
-          <SelectField label="Image Size" description="커서 이미지 크기" value={imageSize} onChange={setImageSize} options={IMAGE_SIZE_OPTIONS} />
-          <SelectField label="Border Radius" description="이미지 둥글기" value={borderRadius} onChange={setBorderRadius} options={BORDER_RADIUS_OPTIONS} />
+              <div className="space-y-2">
+                <label className="text-xs text-gray-300">Name</label>
+                <input
+                  type="text"
+                  value={city.name}
+                  onChange={(e) => updateCity(index, "name", e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Tokyo"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs text-gray-300">Image</label>
+                <select
+                  value={city.img}
+                  onChange={(e) => updateCity(index, "img", e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-600 rounded bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  {DEFAULT_IMAGES.map((img) => (
+                    <option key={img} value={img} className="bg-gray-800 text-white">
+                      {img}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setCities(ANIMATED_LIST_DEFAULTS.cities);
-              setFontSize(ANIMATED_LIST_DEFAULTS.fontSize);
-              setFontWeight(ANIMATED_LIST_DEFAULTS.fontWeight);
-              setTextColor(ANIMATED_LIST_DEFAULTS.textColor);
-              setCodeColor(ANIMATED_LIST_DEFAULTS.codeColor);
-              setGap(ANIMATED_LIST_DEFAULTS.gap);
-              setImageSize(ANIMATED_LIST_DEFAULTS.imageSize);
-              setBorderRadius(ANIMATED_LIST_DEFAULTS.borderRadius);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+        <SelectField
+          label="Text Color"
+          description="메인 텍스트 색상"
+          value={textColor}
+          onChange={setTextColor}
+          options={COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Code Color"
+          description="코드 텍스트 색상"
+          value={codeColor}
+          onChange={setCodeColor}
+          options={COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Gap"
+          description="항목 간 간격"
+          value={gap}
+          onChange={setGap}
+          options={GAP_OPTIONS}
+        />
+        <SelectField
+          label="Image Size"
+          description="커서 이미지 크기"
+          value={imageSize}
+          onChange={setImageSize}
+          options={IMAGE_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Border Radius"
+          description="이미지 둥글기"
+          value={borderRadius}
+          onChange={setBorderRadius}
+          options={BORDER_RADIUS_OPTIONS}
+        />
+      </div>
+
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setCities(ANIMATED_LIST_DEFAULTS.cities);
+            setFontSize(ANIMATED_LIST_DEFAULTS.fontSize);
+            setFontWeight(ANIMATED_LIST_DEFAULTS.fontWeight);
+            setTextColor(ANIMATED_LIST_DEFAULTS.textColor);
+            setCodeColor(ANIMATED_LIST_DEFAULTS.codeColor);
+            setGap(ANIMATED_LIST_DEFAULTS.gap);
+            setImageSize(ANIMATED_LIST_DEFAULTS.imageSize);
+            setBorderRadius(ANIMATED_LIST_DEFAULTS.borderRadius);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -156,8 +173,21 @@ export default function AnimatedTextListPage() {
           borderRadius={borderRadius}
         />
       }
-      usage={usageExample}
-      code={animatedListCode}
+      usage={generateUsage(
+        usageElement("AnimatedTextListWithCursor", {
+          cities: cities,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          textColor: textColor,
+          codeColor: codeColor,
+          gap: gap,
+          imageSize: imageSize,
+          borderRadius: borderRadius,
+        }),
+        [
+          'import AnimatedTextListWithCursor from "@/components/common/framer-motion/AnimatedTextListWithCursor";',
+        ],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "사용자가 리스트 항목에 마우스를 올렸을 때",

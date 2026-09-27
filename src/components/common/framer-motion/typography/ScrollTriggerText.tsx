@@ -3,15 +3,25 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
 
 interface ScrollTriggerTextProps {
+  /** 글자의 활성 스크롤 구간 밖에서 사용하는 CSS 색상입니다. */
   fromColor?: string;
+  /** 각 글자의 활성 스크롤 구간에서 사용하는 CSS 색상입니다. */
   toColor?: string;
+  /** 글자 색상이 바뀌는 CSS 전환 시간(초)입니다. */
   duration?: number;
+  /** 스크롤 진행도에 따라 글자별로 표시할 문자열입니다. */
   text?: string;
+  /** 텍스트의 CSS 글꼴 크기입니다. 단위를 포함한 문자열을 전달하세요. */
   fontSize?: string;
+  /** 타입에 선언되어 있지만 현재 구현에서 사용하지 않습니다. */
   initialX?: number;
+  /** 타입에 선언되어 있지만 현재 구현에서 사용하지 않습니다. */
   finalX?: number;
+  /** 각 글자의 등장 시작 배율입니다. 진행도에 따라 1까지 커집니다. */
   initialScale?: number;
+  /** 타입에 선언되어 있지만 현재 구현에서 사용하지 않습니다. */
   finalScale?: number;
+  /** 텍스트를 표시하는 h1 요소에 추가할 CSS 클래스입니다. */
   className?: string;
 }
 

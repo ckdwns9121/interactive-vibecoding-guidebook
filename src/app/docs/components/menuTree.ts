@@ -99,6 +99,12 @@ const menuTree = [
     category: "Interaction",
     items: [
       {
+        id: "scroll-dot-flip",
+        name: "스크롤 도트 플립",
+        description: "사진 타일이 랜덤하게 뒤집히며 도트 이미지로 전환",
+        path: "/docs/interaction/scroll-dot-flip",
+      },
+      {
         id: "tilt-card",
         name: "틸트 카드",
         description: "마우스 움직임에 반응하는 3D 카드",

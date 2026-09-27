@@ -1,14 +1,17 @@
 {
-  "name": "boilerplate",
+  "name": "interactive-vibecoding-guidebook",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run docs:generate && next dev",
+    "build": "npm run docs:generate && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "docs:generate": "node scripts/generate-docs-metadata.mjs",
+    "docs:check": "node scripts/generate-docs-metadata.mjs --check && node --test scripts/generate-docs-metadata.test.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -22,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

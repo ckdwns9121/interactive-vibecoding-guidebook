@@ -1,8 +1,7 @@
 "use client";
-import textClipEffectCode from "@/components/common/framer-motion/typography/TextClipEffectItem.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 import { useState } from "react";
 import TextClipEffectItem from "@/components/common/framer-motion/typography/TextClipEffectItem";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { TextAreaField } from "@/components/common/docs-controls/TextAreaField";
 import { ColorField } from "@/components/common/docs-controls/ColorField";
@@ -70,53 +69,6 @@ const END_POSITIONS = [
   { value: "center top", label: "Center Top" },
 ];
 
-const usageExample = `import TextClipEffectItem from "@/components/common/framer-motion/typography/TextClipEffectItem";
-
-// 기본 사용법
-<TextClipEffectItem
-  main="Hello"
-  sub="Hello"
-  className="text-4xl"
-  clipColor="#ffffff"
-  showMarkers={false}
-  startPosition="top center"
-  endPosition="bottom center"
-  scrubEffect={false}
-/>
-
-// 여러 항목 사용
-const items = [
-  { main: "Hello", sub: "Hello" },
-  { main: "javascript", sub: "javascript" },
-  { main: "typescript", sub: "typescript" }
-];
-
-{items.map((item, index) => (
-  <TextClipEffectItem
-    key={index}
-    main={item.main}
-    sub={item.sub}
-    className="text-3xl font-bold"
-    clipColor="#ff6b6b"
-    showMarkers={true}
-    startPosition="top center"
-    endPosition="center center"
-    scrubEffect={true}
-  />
-))}
-
-// 커스텀 설정
-<TextClipEffectItem
-  main="Custom Text"
-  sub="Custom Subtitle"
-  className="text-6xl font-black"
-  clipColor="#4ecdc4"
-  showMarkers={true}
-  startPosition="top center"
-  endPosition="bottom center"
-  scrubEffect={true}
-/>`;
-
 // 텍스트 배열을 문자열로 변환/파싱하는 헬퍼 함수
 const itemsToString = (items: typeof TEXT_CLIP_EFFECT_DEFAULTS.items) =>
   items.map((item) => `${item.main}|${item.sub}`).join("\n");
@@ -141,83 +93,80 @@ export default function TextClipEffectPage() {
   const [scrubEffect, setScrubEffect] = useState(TEXT_CLIP_EFFECT_DEFAULTS.scrubEffect);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div className="md:col-span-2 lg:col-span-3">
-            <TextAreaField
-              label="Text Items"
-              description="텍스트 항목들 (main|sub 형식으로 줄바꿈으로 구분)"
-              value={itemsToString(items)}
-              onChange={(value) => setItems(stringToItems(value))}
-              rows={4}
-              placeholder={"Hello|Hello\njavascript|javascript\ntypescript|typescript"}
-            />
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="md:col-span-2 lg:col-span-3">
+          <TextAreaField
+            label="Text Items"
+            description="텍스트 항목들 (main|sub 형식으로 줄바꿈으로 구분)"
+            value={itemsToString(items)}
+            onChange={(value) => setItems(stringToItems(value))}
+            rows={4}
+            placeholder={"Hello|Hello\njavascript|javascript\ntypescript|typescript"}
+          />
+        </div>
+        <ColorField
+          label="Clip Color"
+          description="클립 배경 색상"
+          value={clipColor}
+          onChange={setClipColor}
+          presets={COLOR_PRESETS}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+        <SelectField
+          label="Start Position"
+          description="애니메이션 시작 위치"
+          value={startPosition}
+          onChange={setStartPosition}
+          options={SCROLL_TRIGGER_POSITIONS}
+        />
+        <SelectField
+          label="End Position"
+          description="애니메이션 끝 위치"
+          value={endPosition}
+          onChange={setEndPosition}
+          options={END_POSITIONS}
+        />
+        <ControlField label="Options" description="애니메이션 옵션">
+          <div className="space-y-3">
+            <CheckboxField label="Show Markers" checked={showMarkers} onChange={setShowMarkers} />
+            <CheckboxField label="Scrub Effect" checked={scrubEffect} onChange={setScrubEffect} />
           </div>
-          <ColorField
-            label="Clip Color"
-            description="클립 배경 색상"
-            value={clipColor}
-            onChange={setClipColor}
-            presets={COLOR_PRESETS}
-          />
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-          <SelectField
-            label="Start Position"
-            description="애니메이션 시작 위치"
-            value={startPosition}
-            onChange={setStartPosition}
-            options={SCROLL_TRIGGER_POSITIONS}
-          />
-          <SelectField
-            label="End Position"
-            description="애니메이션 끝 위치"
-            value={endPosition}
-            onChange={setEndPosition}
-            options={END_POSITIONS}
-          />
-          <ControlField label="Options" description="애니메이션 옵션">
-            <div className="space-y-3">
-              <CheckboxField label="Show Markers" checked={showMarkers} onChange={setShowMarkers} />
-              <CheckboxField label="Scrub Effect" checked={scrubEffect} onChange={setScrubEffect} />
-            </div>
-          </ControlField>
-        </div>
+        </ControlField>
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setItems(TEXT_CLIP_EFFECT_DEFAULTS.items);
-              setClipColor(TEXT_CLIP_EFFECT_DEFAULTS.clipColor);
-              setFontSize(TEXT_CLIP_EFFECT_DEFAULTS.fontSize);
-              setFontWeight(TEXT_CLIP_EFFECT_DEFAULTS.fontWeight);
-              setShowMarkers(TEXT_CLIP_EFFECT_DEFAULTS.showMarkers);
-              setStartPosition(TEXT_CLIP_EFFECT_DEFAULTS.startPosition);
-              setEndPosition(TEXT_CLIP_EFFECT_DEFAULTS.endPosition);
-              setScrubEffect(TEXT_CLIP_EFFECT_DEFAULTS.scrubEffect);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setItems(TEXT_CLIP_EFFECT_DEFAULTS.items);
+            setClipColor(TEXT_CLIP_EFFECT_DEFAULTS.clipColor);
+            setFontSize(TEXT_CLIP_EFFECT_DEFAULTS.fontSize);
+            setFontWeight(TEXT_CLIP_EFFECT_DEFAULTS.fontWeight);
+            setShowMarkers(TEXT_CLIP_EFFECT_DEFAULTS.showMarkers);
+            setStartPosition(TEXT_CLIP_EFFECT_DEFAULTS.startPosition);
+            setEndPosition(TEXT_CLIP_EFFECT_DEFAULTS.endPosition);
+            setScrubEffect(TEXT_CLIP_EFFECT_DEFAULTS.scrubEffect);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -243,8 +192,25 @@ export default function TextClipEffectPage() {
           </div>
         </div>
       }
-      usage={usageExample}
-      code={textClipEffectCode}
+      usage={generateUsage(
+        usageElement("div", { className: "p-8 md:p-16 min-h-[60vh]" }, [
+          usageElement("div", { className: `flex flex-col gap-8 ${fontWeight}` }, [
+            items.map((item) =>
+              usageElement("TextClipEffectItem", {
+                main: item.main,
+                sub: item.sub,
+                className: fontSize,
+                clipColor: clipColor,
+                showMarkers: showMarkers,
+                startPosition: startPosition,
+                endPosition: endPosition,
+                scrubEffect: scrubEffect,
+              }),
+            ),
+          ]),
+        ]),
+        ['import TextClipEffectItem from "@/components/common/framer-motion/typography/TextClipEffectItem";'],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "사용자가 텍스트 영역을 스크롤할 때",

@@ -1,60 +1,14 @@
 "use client";
-import paintFillTextCode from "@/components/common/framer-motion/typography/paint-fill-text/PaintFillText.tsx?raw";
-import cssModuleCode from "@/components/common/framer-motion/typography/paint-fill-text/PaintFillText.module.css?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import PaintFillText from "@/components/common/framer-motion/typography/paint-fill-text/PaintFillText";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
 import { PAINT_FILL_TEXT_DEFAULTS, FONT_SIZE_OPTIONS, FONT_WEIGHT_OPTIONS, COLOR_PRESETS } from "./constants";
-
-const usageExample = `import PaintFillText from "@/components/common/framer-motion/typography/paint-fill-text/PaintFillText";
-
-// 기본 사용법
-<PaintFillText
-  text="Paint Fill Text"
-  duration={1.5}
-  delay={0.5}
-  textColor="rgba(255, 255, 255, 1)"
-/>
-
-// 커스텀 설정
-<PaintFillText
-  text="Custom Paint Fill"
-  duration={2.0}
-  delay={0.2}
-  textColor="rgba(29, 78, 216, 1)"
-  fontSize="text-4xl sm:text-6xl md:text-7xl"
-  fontWeight="font-semibold"
-  trackingTight={false}
-  leadingNone={false}
-/>
-
-// 빠른 애니메이션
-<PaintFillText
-  text="Quick Fill"
-  duration={0.8}
-  delay={0}
-  textColor="rgba(220, 38, 38, 1)"
-  fontSize="text-3xl sm:text-4xl md:text-5xl"
-  fontWeight="font-black"
-/>
-
-// 긴 텍스트
-<PaintFillText
-  text="This is a longer text that demonstrates the paint fill effect"
-  duration={3.0}
-  delay={1.0}
-  textColor="rgba(5, 150, 105, 1)"
-  fontSize="text-2xl sm:text-3xl md:text-4xl"
-  fontWeight="font-medium"
-  trackingTight={true}
-  leadingNone={true}
-/>`;
 
 export default function PaintFillTextPage() {
   const [text, setText] = useState(PAINT_FILL_TEXT_DEFAULTS.text);
@@ -67,110 +21,107 @@ export default function PaintFillTextPage() {
   const [leadingNone, setLeadingNone] = useState(PAINT_FILL_TEXT_DEFAULTS.leadingNone);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <ControlField label="Text" description="표시할 텍스트">
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ControlField label="Text" description="표시할 텍스트">
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+            placeholder="Paint Fill Text"
+          />
+        </ControlField>
+        <RangeWithNumber
+          label="Duration"
+          description="애니메이션 지속 시간 (초)"
+          value={duration}
+          onChange={setDuration}
+          min={0.5}
+          max={5}
+          step={0.1}
+        />
+        <RangeWithNumber
+          label="Delay"
+          description="애니메이션 시작 지연 시간 (초)"
+          value={delay}
+          onChange={setDelay}
+          min={0}
+          max={3}
+          step={0.1}
+        />
+        {/* rgba 값 처리 때문에 ColorField 대신 인라인 유지 */}
+        <ControlField label="Text Color" description="채워질 텍스트 색상">
+          <div className="flex items-center space-x-3 mb-2">
+            <input
+              type="color"
+              value={textColor.includes("rgba") ? "#ffffff" : textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+              className="w-12 h-8 border border-gray-600 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
             <input
               type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              placeholder="Paint Fill Text"
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+              className="flex-1 px-3 py-1 text-sm border border-gray-600 rounded bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-400"
+              placeholder="rgba(255, 255, 255, 1)"
             />
-          </ControlField>
-          <RangeWithNumber
-            label="Duration"
-            description="애니메이션 지속 시간 (초)"
-            value={duration}
-            onChange={setDuration}
-            min={0.5}
-            max={5}
-            step={0.1}
-          />
-          <RangeWithNumber
-            label="Delay"
-            description="애니메이션 시작 지연 시간 (초)"
-            value={delay}
-            onChange={setDelay}
-            min={0}
-            max={3}
-            step={0.1}
-          />
-          {/* rgba 값 처리 때문에 ColorField 대신 인라인 유지 */}
-          <ControlField label="Text Color" description="채워질 텍스트 색상">
-            <div className="flex items-center space-x-3 mb-2">
-              <input
-                type="color"
-                value={textColor.includes("rgba") ? "#ffffff" : textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-12 h-8 border border-gray-600 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <input
-                type="text"
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="flex-1 px-3 py-1 text-sm border border-gray-600 rounded bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-400"
-                placeholder="rgba(255, 255, 255, 1)"
-              />
-            </div>
-            <div className="flex flex-wrap gap-1">
-              {COLOR_PRESETS.map((preset) => (
-                <button
-                  key={preset.value}
-                  onClick={() => setTextColor(preset.value)}
-                  className="w-6 h-6 rounded border border-gray-600 hover:scale-110 transition-transform"
-                  style={{ backgroundColor: preset.value }}
-                  title={preset.label}
-                />
-              ))}
-            </div>
-          </ControlField>
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-          <div className="md:col-span-2 lg:col-span-3">
-            <ControlField label="Typography Options" description="텍스트 스타일 옵션">
-              <div className="flex items-center space-x-6">
-                <CheckboxField label="Tracking Tight" checked={trackingTight} onChange={setTrackingTight} />
-                <CheckboxField label="Leading None" checked={leadingNone} onChange={setLeadingNone} />
-              </div>
-            </ControlField>
           </div>
+          <div className="flex flex-wrap gap-1">
+            {COLOR_PRESETS.map((preset) => (
+              <button
+                key={preset.value}
+                onClick={() => setTextColor(preset.value)}
+                className="w-6 h-6 rounded border border-gray-600 hover:scale-110 transition-transform"
+                style={{ backgroundColor: preset.value }}
+                title={preset.label}
+              />
+            ))}
+          </div>
+        </ControlField>
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+        <div className="md:col-span-2 lg:col-span-3">
+          <ControlField label="Typography Options" description="텍스트 스타일 옵션">
+            <div className="flex items-center space-x-6">
+              <CheckboxField label="Tracking Tight" checked={trackingTight} onChange={setTrackingTight} />
+              <CheckboxField label="Leading None" checked={leadingNone} onChange={setLeadingNone} />
+            </div>
+          </ControlField>
         </div>
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setText(PAINT_FILL_TEXT_DEFAULTS.text);
-              setDuration(PAINT_FILL_TEXT_DEFAULTS.duration);
-              setDelay(PAINT_FILL_TEXT_DEFAULTS.delay);
-              setTextColor(PAINT_FILL_TEXT_DEFAULTS.textColor);
-              setFontSize(PAINT_FILL_TEXT_DEFAULTS.fontSize);
-              setFontWeight(PAINT_FILL_TEXT_DEFAULTS.fontWeight);
-              setTrackingTight(PAINT_FILL_TEXT_DEFAULTS.trackingTight);
-              setLeadingNone(PAINT_FILL_TEXT_DEFAULTS.leadingNone);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setText(PAINT_FILL_TEXT_DEFAULTS.text);
+            setDuration(PAINT_FILL_TEXT_DEFAULTS.duration);
+            setDelay(PAINT_FILL_TEXT_DEFAULTS.delay);
+            setTextColor(PAINT_FILL_TEXT_DEFAULTS.textColor);
+            setFontSize(PAINT_FILL_TEXT_DEFAULTS.fontSize);
+            setFontWeight(PAINT_FILL_TEXT_DEFAULTS.fontWeight);
+            setTrackingTight(PAINT_FILL_TEXT_DEFAULTS.trackingTight);
+            setLeadingNone(PAINT_FILL_TEXT_DEFAULTS.leadingNone);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -192,8 +143,23 @@ export default function PaintFillTextPage() {
           />
         </div>
       }
-      usage={usageExample}
-      code={`${paintFillTextCode}\n\n/* CSS Module */\n${cssModuleCode}`}
+      usage={generateUsage(
+        usageElement("div", { className: "flex items-center justify-center min-h-[200px] p-8 md:p-16" }, [
+          usageElement("PaintFillText", {
+            text: text,
+            duration: duration,
+            delay: delay,
+            textColor: textColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            trackingTight: trackingTight,
+            leadingNone: leadingNone,
+          }),
+        ]),
+        [
+          'import PaintFillText from "@/components/common/framer-motion/typography/paint-fill-text/PaintFillText";',
+        ],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "컴포넌트가 마운트되거나 애니메이션이 시작될 때",

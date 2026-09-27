@@ -1,9 +1,8 @@
 "use client";
-import revealTextCode from "@/components/common/framer-motion/typography/reveal-text/RevealText.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import RevealText from "@/components/common/framer-motion/typography/reveal-text/RevealText";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { TextAreaField } from "@/components/common/docs-controls/TextAreaField";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
@@ -17,44 +16,11 @@ import {
   COLOR_PRESETS,
 } from "./constants";
 
-const usageExample = `import RevealText from "@/components/common/framer-motion/typography/reveal-text/RevealText";
-
-// 기본 사용법
-<RevealText text="Hello Vibe Coding." />
-
-// 커스텀 설정
-<RevealText
-  text="고급 등장 애니메이션"
-  direction="up"
-  delay={0.5}
-  duration={0.8}
-  stagger={0.1}
-  byWord={true}
-  className="text-4xl font-bold text-blue-600"
-/>
-
-// 단어 단위 애니메이션
-<RevealText
-  text="단어별로 나타나는 텍스트"
-  byWord={true}
-  direction="left"
-  stagger={0.2}
-  className="text-2xl"
-/>
-
-// 빠른 글자 애니메이션
-<RevealText
-  text="빠른 등장 효과"
-  direction="down"
-  delay={0}
-  duration={0.3}
-  stagger={0.02}
-  className="text-3xl font-semibold"
-/>`;
-
 export default function RevealTextDocsPage() {
   const [text, setText] = useState(REVEAL_TEXT_DEFAULTS.text);
-  const [direction, setDirection] = useState<"up" | "down" | "left" | "right">(REVEAL_TEXT_DEFAULTS.direction);
+  const [direction, setDirection] = useState<"up" | "down" | "left" | "right">(
+    REVEAL_TEXT_DEFAULTS.direction,
+  );
   const [delay, setDelay] = useState(REVEAL_TEXT_DEFAULTS.delay);
   const [duration, setDuration] = useState(REVEAL_TEXT_DEFAULTS.duration);
   const [stagger, setStagger] = useState(REVEAL_TEXT_DEFAULTS.stagger);
@@ -64,120 +30,117 @@ export default function RevealTextDocsPage() {
   const [textColor, setTextColor] = useState(REVEAL_TEXT_DEFAULTS.textColor);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <TextAreaField
-            label="Text"
-            description="텍스트를 입력하세요"
-            value={text}
-            onChange={setText}
-            rows={3}
-            placeholder="Reveal할 텍스트를 입력하세요"
-          />
-          <SelectField
-            label="Direction"
-            description="애니메이션 방향"
-            value={direction}
-            onChange={(value) => setDirection(value as "up" | "down" | "left" | "right")}
-            options={DIRECTION_OPTIONS}
-          />
-          <RangeWithNumber
-            label="Start Delay"
-            description="애니메이션 시작 지연 시간 (초)"
-            value={delay}
-            onChange={setDelay}
-            min={0}
-            max={3}
-            step={0.1}
-          />
-          <RangeWithNumber
-            label="Duration"
-            description="각 글자/단어 애니메이션 시간 (초)"
-            value={duration}
-            onChange={setDuration}
-            min={0.1}
-            max={2}
-            step={0.1}
-          />
-          <RangeWithNumber
-            label="Stagger"
-            description="각 글자/단어 사이 간격 (초)"
-            value={stagger}
-            onChange={setStagger}
-            min={0}
-            max={0.3}
-            step={0.01}
-          />
-          <ControlField label="Animation Unit" description="애니메이션 단위">
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="byWord"
-                  checked={!byWord}
-                  onChange={() => setByWord(false)}
-                  className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
-                />
-                <span className="text-sm text-gray-200">글자 단위</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="byWord"
-                  checked={byWord}
-                  onChange={() => setByWord(true)}
-                  className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
-                />
-                <span className="text-sm text-gray-200">단어 단위</span>
-              </label>
-            </div>
-          </ControlField>
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-          <SelectField
-            label="Text Color"
-            description="텍스트 색상"
-            value={textColor}
-            onChange={setTextColor}
-            options={COLOR_PRESETS}
-          />
-        </div>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <TextAreaField
+          label="Text"
+          description="텍스트를 입력하세요"
+          value={text}
+          onChange={setText}
+          rows={3}
+          placeholder="Reveal할 텍스트를 입력하세요"
+        />
+        <SelectField
+          label="Direction"
+          description="애니메이션 방향"
+          value={direction}
+          onChange={(value) => setDirection(value as "up" | "down" | "left" | "right")}
+          options={DIRECTION_OPTIONS}
+        />
+        <RangeWithNumber
+          label="Start Delay"
+          description="애니메이션 시작 지연 시간 (초)"
+          value={delay}
+          onChange={setDelay}
+          min={0}
+          max={3}
+          step={0.1}
+        />
+        <RangeWithNumber
+          label="Duration"
+          description="각 글자/단어 애니메이션 시간 (초)"
+          value={duration}
+          onChange={setDuration}
+          min={0.1}
+          max={2}
+          step={0.1}
+        />
+        <RangeWithNumber
+          label="Stagger"
+          description="각 글자/단어 사이 간격 (초)"
+          value={stagger}
+          onChange={setStagger}
+          min={0}
+          max={0.3}
+          step={0.01}
+        />
+        <ControlField label="Animation Unit" description="애니메이션 단위">
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="byWord"
+                checked={!byWord}
+                onChange={() => setByWord(false)}
+                className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
+              />
+              <span className="text-sm text-gray-200">글자 단위</span>
+            </label>
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="byWord"
+                checked={byWord}
+                onChange={() => setByWord(true)}
+                className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
+              />
+              <span className="text-sm text-gray-200">단어 단위</span>
+            </label>
+          </div>
+        </ControlField>
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+        <SelectField
+          label="Text Color"
+          description="텍스트 색상"
+          value={textColor}
+          onChange={setTextColor}
+          options={COLOR_PRESETS}
+        />
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setText(REVEAL_TEXT_DEFAULTS.text);
-              setDirection(REVEAL_TEXT_DEFAULTS.direction);
-              setDelay(REVEAL_TEXT_DEFAULTS.delay);
-              setDuration(REVEAL_TEXT_DEFAULTS.duration);
-              setStagger(REVEAL_TEXT_DEFAULTS.stagger);
-              setByWord(REVEAL_TEXT_DEFAULTS.byWord);
-              setFontSize(REVEAL_TEXT_DEFAULTS.fontSize);
-              setFontWeight(REVEAL_TEXT_DEFAULTS.fontWeight);
-              setTextColor(REVEAL_TEXT_DEFAULTS.textColor);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setText(REVEAL_TEXT_DEFAULTS.text);
+            setDirection(REVEAL_TEXT_DEFAULTS.direction);
+            setDelay(REVEAL_TEXT_DEFAULTS.delay);
+            setDuration(REVEAL_TEXT_DEFAULTS.duration);
+            setStagger(REVEAL_TEXT_DEFAULTS.stagger);
+            setByWord(REVEAL_TEXT_DEFAULTS.byWord);
+            setFontSize(REVEAL_TEXT_DEFAULTS.fontSize);
+            setFontWeight(REVEAL_TEXT_DEFAULTS.fontWeight);
+            setTextColor(REVEAL_TEXT_DEFAULTS.textColor);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -197,8 +160,19 @@ export default function RevealTextDocsPage() {
           />
         </div>
       }
-      usage={usageExample}
-      code={revealTextCode}
+      usage={generateUsage(
+        usageElement("div", { className: `${fontSize} ${fontWeight} ${textColor}` }, [
+          usageElement("RevealText", {
+            text: text,
+            direction: direction,
+            delay: delay,
+            duration: duration,
+            stagger: stagger,
+            byWord: byWord,
+          }),
+        ]),
+        ['import RevealText from "@/components/common/framer-motion/typography/reveal-text/RevealText";'],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "컴포넌트가 마운트되거나 텍스트가 변경될 때",

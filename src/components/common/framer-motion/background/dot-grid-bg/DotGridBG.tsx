@@ -3,15 +3,25 @@
 import React, { useRef, useEffect, useCallback } from "react";
 
 interface DotGridBGProps {
+  /** 기본 점의 반지름(px)입니다. 마우스 주변에서는 확대 배율이 곱해집니다. */
   dotSize?: number;
+  /** 점의 6자리 HEX 색상입니다. 예: #ffffff. */
   dotColor?: string;
+  /** 점 사이의 가로·세로 간격(px)입니다. 0보다 큰 값을 사용하세요. */
   dotSpacing?: number;
+  /** 마우스 위치를 중심으로 점이 반응하는 반경(px)입니다. */
   interactionRadius?: number;
+  /** 마우스에 가장 가까운 점에 적용할 최대 크기 배율입니다. */
   maxDotScale?: number;
+  /** 마우스 주변의 가까운 점들을 선으로 연결할지 설정합니다. */
   showLines?: boolean;
+  /** 연결선의 6자리 HEX 색상입니다. 예: #ffffff. */
   lineColor?: string;
+  /** 연결선 불투명도의 상한(0~1)입니다. 점 사이 거리가 멀수록 투명해집니다. */
   lineOpacity?: number;
+  /** 캔버스와 콘텐츠를 감싸는 컨테이너의 CSS 클래스입니다. 높이를 확보하세요. */
   className?: string;
+  /** 점 그리드 위에 표시할 콘텐츠입니다. 이 콘텐츠 영역은 마우스 이벤트를 통과시킵니다. */
   children?: React.ReactNode;
 }
 
@@ -114,7 +124,17 @@ export default function DotGridBG({
         }
       }
     }
-  }, [dotSize, dotColor, dotSpacing, interactionRadius, maxDotScale, showLines, lineColor, lineOpacity, hexToRgb]);
+  }, [
+    dotSize,
+    dotColor,
+    dotSpacing,
+    interactionRadius,
+    maxDotScale,
+    showLines,
+    lineColor,
+    lineOpacity,
+    hexToRgb,
+  ]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -173,14 +193,8 @@ export default function DotGridBG({
 
   return (
     <div className={`relative ${className}`}>
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 pointer-events-auto"
-        style={{ display: "block" }}
-      />
-      {children && (
-        <div className="relative z-10 pointer-events-none">{children}</div>
-      )}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-auto" style={{ display: "block" }} />
+      {children && <div className="relative z-10 pointer-events-none">{children}</div>}
     </div>
   );
 }

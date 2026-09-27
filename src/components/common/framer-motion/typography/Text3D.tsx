@@ -3,22 +3,39 @@
 import React from "react";
 
 interface Text3DProps {
+  /** 입체 그림자를 적용할 문자열입니다. */
   text: string;
+  /** 텍스트 글꼴 크기(px)입니다. */
   fontSize?: number;
+  /** 텍스트의 평면 회전 각도(deg)입니다. */
   rotateAngle?: number;
+  /** 텍스트를 가로로 기울이는 각도(deg)입니다. */
   skewAngle?: number;
+  /** 텍스트 h1 요소에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 텍스트 앞면의 CSS 색상입니다. */
   baseColor?: string;
+  /** 처음 20단계와 65단계 이후 그림자의 CSS 색상입니다. */
   shadowColor1?: string;
+  /** 21~47단계 그림자의 CSS 색상입니다. */
   shadowColor2?: string;
+  /** 48~64단계 그림자의 CSS 색상입니다. */
   shadowColor3?: string;
+  /** centered가 true일 때 전체 화면 컨테이너에 적용할 CSS 배경색입니다. */
   backgroundColor?: string;
+  /** 텍스트의 CSS font-family 값입니다. 사용할 웹폰트는 별도로 불러와야 합니다. */
   fontFamily?: string;
+  /** 65단계 이후 추가할 그림자의 마지막 단계 번호입니다. 앞의 64단계는 항상 생성됩니다. */
   shadowDepth?: number;
+  /** true이면 화면 높이의 배경 컨테이너를 만들고 텍스트를 중앙에 배치합니다. */
   centered?: boolean;
+  /** 각 그림자 단계의 가로 위치를 계산할 기준 이동량(px)입니다. */
   shadowOffsetX?: number;
+  /** 각 그림자 단계의 세로 위치를 계산할 기준 이동량(px)입니다. */
   shadowOffsetY?: number;
+  /** 각 text-shadow에 적용할 흐림 반경(px)입니다. */
   shadowBlur?: number;
+  /** 그림자 가로·세로 이동 거리에 곱할 배율입니다. */
   shadowSpread?: number;
 }
 

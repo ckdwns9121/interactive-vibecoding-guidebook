@@ -4,12 +4,19 @@ import { motion, useAnimationControls } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 
 interface ScrollMarqueeTextProps {
+  /** 이어 붙여 반복해서 흘려보낼 문자열 배열입니다. */
   texts: string[];
+  /** 기본 이동량 계수입니다. 프레임마다 값의 0.1배(px)만큼 이동하며 스크롤 중에는 가속됩니다. */
   baseSpeed?: number;
+  /** 텍스트의 CSS 글꼴 크기입니다. px, rem, vw 등의 단위를 포함하세요. */
   fontSize?: string;
+  /** 흘러가는 텍스트의 CSS 색상입니다. */
   color?: string;
+  /** 마퀴 컨테이너의 CSS 배경색입니다. */
   backgroundColor?: string;
+  /** 마퀴 바깥 컨테이너에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 움직이는 텍스트 요소의 인라인 스타일입니다. fontSize와 color 설정을 덮어쓸 수 있습니다. */
   style?: React.CSSProperties;
   /**
    * direction: false(기본값) = 왼쪽, true = 오른쪽

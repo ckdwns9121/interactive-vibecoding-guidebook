@@ -3,10 +3,15 @@ import React, { useRef, ReactNode } from "react";
 import { useCursor } from "./CursorContext";
 
 interface OverlayCursorProviderProps {
+  /** 커서 모양을 바꿀 마우스 진입 영역의 콘텐츠입니다. 상위 CursorProvider와 GlobalCursor가 필요합니다. */
   children: ReactNode;
+  /** 이 영역에 마우스를 올렸을 때 커서 안에 표시할 문자열입니다. */
   cursorText?: string;
+  /** 이 영역에서 표시할 커서의 지름(px)입니다. */
   cursorSize?: number;
+  /** 이 영역에서 표시할 커서의 CSS 배경색입니다. */
   cursorColor?: string;
+  /** 마우스 진입·이탈을 감지하는 영역에 추가할 CSS 클래스입니다. */
   className?: string;
 }
 
