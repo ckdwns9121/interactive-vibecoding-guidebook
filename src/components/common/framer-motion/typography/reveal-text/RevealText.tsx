@@ -3,8 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 
 interface RevealTextProps {
+  /** 등장 애니메이션을 적용할 문자열입니다. */
   text: string;
+  /** 텍스트 바깥 span에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 텍스트 바깥 span에 적용할 인라인 스타일입니다. */
   style?: React.CSSProperties;
   /**
    * 애니메이션 방향: up, down, left, right

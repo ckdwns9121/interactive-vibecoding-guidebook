@@ -5,35 +5,52 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface DynamicIslandProps {
   // 기본 상태 설정
+  /** 외부에서 제어할 펼침 상태입니다. 생략하면 내부 상태를 사용합니다. */
   isExpanded?: boolean;
+  /** 클릭·호버로 상태가 바뀔 때 다음 펼침 상태를 전달합니다. 제어 모드의 자동 닫힘에서도 호출됩니다. */
   onToggle?: (expanded: boolean) => void;
 
   // 스타일링
+  /** 아일랜드 바깥 motion.div에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 접힌 상태의 CSS 배경색이며 펼친 상태의 기본 배경색으로도 사용합니다. */
   backgroundColor?: string;
+  /** 펼친 상태의 CSS 배경색입니다. 생략하면 backgroundColor를 사용합니다. */
   expandedBackgroundColor?: string;
 
   // 크기 설정
+  /** 접힌 상태의 너비(px)입니다. */
   collapsedWidth?: number;
+  /** 접힌 상태의 높이(px)입니다. 모서리 반경은 이 값의 절반입니다. */
   collapsedHeight?: number;
+  /** 펼친 상태의 너비(px)입니다. */
   expandedWidth?: number;
+  /** 펼친 상태의 높이(px)입니다. */
   expandedHeight?: number;
 
   // 콘텐츠
+  /** 접힌 상태에 표시할 콘텐츠입니다. 생략하면 흰색 점을 표시합니다. */
   collapsedContent?: ReactNode;
+  /** 펼친 상태에 표시할 콘텐츠입니다. 생략하면 기본 상태 메시지를 표시합니다. */
   expandedContent?: ReactNode;
 
   // 애니메이션 설정
+  /** 콘텐츠 전환의 기준 시간(초)입니다. 크기 전환은 springConfig의 물리 설정을 사용합니다. */
   animationDuration?: number;
+  /** 크기 전환에 적용할 스프링 강성(stiffness)과 감쇠(damping)입니다. */
   springConfig?: {
     stiffness: number;
     damping: number;
   };
 
   // 인터랙션 설정
+  /** 클릭할 때 펼침 상태를 전환할지 설정합니다. */
   clickToToggle?: boolean;
+  /** 마우스 진입 시 펼치고 이탈 시 접을지 설정합니다. */
   hoverToExpand?: boolean;
+  /** 펼친 뒤 지정된 시간이 지나면 자동으로 접을지 설정합니다. */
   autoCollapse?: boolean;
+  /** 자동으로 접기까지 기다릴 시간(ms)입니다. */
   autoCollapseDelay?: number;
 }
 

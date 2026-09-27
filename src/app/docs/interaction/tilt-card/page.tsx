@@ -1,10 +1,9 @@
 "use client";
-import tiltCardCode from "@/components/common/effects/TiltCard.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import TiltCard from "@/components/common/effects/TiltCard";
 import ComponentDocPage from "../../components/ComponentDocPage";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import {
@@ -14,35 +13,6 @@ import {
   BORDER_RADIUS_OPTIONS,
   SHADOW_OPTIONS,
 } from "./constants";
-
-const usageExample = `import TiltCard from "@/components/common/effects/TiltCard";
-
-// 기본 사용법
-<TiltCard maxTilt={15} parallaxFactor={0.5}>
-  <div className="bg-white p-6 rounded-lg shadow-lg">
-    <h3 className="text-xl font-bold text-gray-800 mb-2">카드 제목</h3>
-    <p className="text-gray-600">카드 내용입니다.</p>
-  </div>
-</TiltCard>
-
-// 커스텀 설정
-<TiltCard maxTilt={25} parallaxFactor={0.8}>
-  <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-8 rounded-xl shadow-2xl">
-    <h3 className="text-2xl font-bold text-white mb-4">인터랙티브 카드</h3>
-    <p className="text-blue-100">마우스 움직임에 따라 기울어지는 카드입니다.</p>
-  </div>
-</TiltCard>
-
-// 이미지 카드
-<TiltCard maxTilt={20} parallaxFactor={0.6}>
-  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-    <img src="/image.jpg" alt="카드 이미지" className="w-full h-48 object-cover" />
-    <div className="p-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">이미지 카드</h3>
-      <p className="text-gray-600">이미지가 포함된 틸트 카드입니다.</p>
-    </div>
-  </div>
-</TiltCard>`;
 
 export default function TiltCardDocsPage() {
   // 컨트롤 상태
@@ -64,104 +34,113 @@ export default function TiltCardDocsPage() {
 
   // 컨트롤 패널
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <RangeWithNumber
-            label="Max Tilt"
-            description="최대 기울기 각도 (도)"
-            value={maxTilt}
-            onChange={setMaxTilt}
-            min={5}
-            max={45}
-            step={1}
-          />
-          <RangeWithNumber
-            label="Parallax Factor"
-            description="패럴럭스 깊이 강도"
-            value={parallaxFactor}
-            onChange={setParallaxFactor}
-            min={0}
-            max={1}
-            step={0.05}
-          />
-          <RangeWithNumber
-            label="Card Width"
-            description="카드 너비 (px)"
-            value={cardWidth}
-            onChange={setCardWidth}
-            min={200}
-            max={600}
-            step={20}
-          />
-          <RangeWithNumber
-            label="Card Height"
-            description="카드 높이 (px)"
-            value={cardHeight}
-            onChange={setCardHeight}
-            min={200}
-            max={500}
-            step={20}
-          />
-          <SelectField
-            label="Background Color"
-            description="카드 배경색"
-            value={backgroundColor}
-            onChange={setBackgroundColor}
-            options={BACKGROUND_COLOR_OPTIONS}
-          />
-          <SelectField label="Padding" description="카드 내부 여백" value={cardPadding} onChange={setCardPadding} options={PADDING_OPTIONS} />
-          <SelectField
-            label="Border Radius"
-            description="모서리 둥글기"
-            value={borderRadius}
-            onChange={setBorderRadius}
-            options={BORDER_RADIUS_OPTIONS}
-          />
-          <SelectField label="Shadow" description="그림자 강도" value={shadow} onChange={setShadow} options={SHADOW_OPTIONS} />
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <RangeWithNumber
+          label="Max Tilt"
+          description="최대 기울기 각도 (도)"
+          value={maxTilt}
+          onChange={setMaxTilt}
+          min={5}
+          max={45}
+          step={1}
+        />
+        <RangeWithNumber
+          label="Parallax Factor"
+          description="패럴럭스 깊이 강도"
+          value={parallaxFactor}
+          onChange={setParallaxFactor}
+          min={0}
+          max={1}
+          step={0.05}
+        />
+        <RangeWithNumber
+          label="Card Width"
+          description="카드 너비 (px)"
+          value={cardWidth}
+          onChange={setCardWidth}
+          min={200}
+          max={600}
+          step={20}
+        />
+        <RangeWithNumber
+          label="Card Height"
+          description="카드 높이 (px)"
+          value={cardHeight}
+          onChange={setCardHeight}
+          min={200}
+          max={500}
+          step={20}
+        />
+        <SelectField
+          label="Background Color"
+          description="카드 배경색"
+          value={backgroundColor}
+          onChange={setBackgroundColor}
+          options={BACKGROUND_COLOR_OPTIONS}
+        />
+        <SelectField
+          label="Padding"
+          description="카드 내부 여백"
+          value={cardPadding}
+          onChange={setCardPadding}
+          options={PADDING_OPTIONS}
+        />
+        <SelectField
+          label="Border Radius"
+          description="모서리 둥글기"
+          value={borderRadius}
+          onChange={setBorderRadius}
+          options={BORDER_RADIUS_OPTIONS}
+        />
+        <SelectField
+          label="Shadow"
+          description="그림자 강도"
+          value={shadow}
+          onChange={setShadow}
+          options={SHADOW_OPTIONS}
+        />
 
-          {/* TITLE TEXT */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">Title Text</label>
-            <p className="text-xs text-gray-400">카드 제목</p>
-            <input
-              type="text"
-              value={titleText}
-              onChange={(e) => setTitleText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              placeholder="카드 제목을 입력하세요"
-            />
-          </div>
+        {/* TITLE TEXT */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-200 uppercase tracking-wide">Title Text</label>
+          <p className="text-xs text-gray-400">카드 제목</p>
+          <input
+            type="text"
+            value={titleText}
+            onChange={(e) => setTitleText(e.target.value)}
+            className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+            placeholder="카드 제목을 입력하세요"
+          />
         </div>
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setMaxTilt(TILT_CARD_DEFAULTS.maxTilt);
-              setParallaxFactor(TILT_CARD_DEFAULTS.parallaxFactor);
-              setCardWidth(TILT_CARD_DEFAULTS.cardWidth);
-              setCardHeight(TILT_CARD_DEFAULTS.cardHeight);
-              setBackgroundColor(TILT_CARD_DEFAULTS.backgroundColor);
-              setCardPadding(TILT_CARD_DEFAULTS.cardPadding);
-              setBorderRadius(TILT_CARD_DEFAULTS.borderRadius);
-              setShadow(TILT_CARD_DEFAULTS.shadow);
-              setTitleText(TILT_CARD_DEFAULTS.titleText);
-              setTitleSize(TILT_CARD_DEFAULTS.titleSize);
-              setTitleWeight(TILT_CARD_DEFAULTS.titleWeight);
-              setTitleColor(TILT_CARD_DEFAULTS.titleColor);
-              setDescriptionText(TILT_CARD_DEFAULTS.descriptionText);
-              setDescriptionSize(TILT_CARD_DEFAULTS.descriptionSize);
-              setDescriptionColor(TILT_CARD_DEFAULTS.descriptionColor);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setMaxTilt(TILT_CARD_DEFAULTS.maxTilt);
+            setParallaxFactor(TILT_CARD_DEFAULTS.parallaxFactor);
+            setCardWidth(TILT_CARD_DEFAULTS.cardWidth);
+            setCardHeight(TILT_CARD_DEFAULTS.cardHeight);
+            setBackgroundColor(TILT_CARD_DEFAULTS.backgroundColor);
+            setCardPadding(TILT_CARD_DEFAULTS.cardPadding);
+            setBorderRadius(TILT_CARD_DEFAULTS.borderRadius);
+            setShadow(TILT_CARD_DEFAULTS.shadow);
+            setTitleText(TILT_CARD_DEFAULTS.titleText);
+            setTitleSize(TILT_CARD_DEFAULTS.titleSize);
+            setTitleWeight(TILT_CARD_DEFAULTS.titleWeight);
+            setTitleColor(TILT_CARD_DEFAULTS.titleColor);
+            setDescriptionText(TILT_CARD_DEFAULTS.descriptionText);
+            setDescriptionSize(TILT_CARD_DEFAULTS.descriptionSize);
+            setDescriptionColor(TILT_CARD_DEFAULTS.descriptionColor);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -187,8 +166,38 @@ export default function TiltCardDocsPage() {
           </TiltCard>
         </div>
       }
-      usage={usageExample}
-      code={tiltCardCode}
+      usage={generateUsage(
+        usageElement("div", { className: "flex justify-center" }, [
+          usageElement(
+            "TiltCard",
+            {
+              maxTilt: maxTilt,
+              parallaxFactor: parallaxFactor,
+              style: {
+                width: `${cardWidth}px`,
+                height: `${cardHeight}px`,
+              },
+            },
+            [
+              usageElement(
+                "div",
+                {
+                  className: `${backgroundColor} ${cardPadding} ${borderRadius} ${shadow} w-full h-full flex flex-col justify-center items-center text-center`,
+                },
+                [
+                  usageElement("h3", { className: `${titleSize} ${titleWeight} ${titleColor} mb-4` }, [
+                    usageText(titleText),
+                  ]),
+                  usageElement("p", { className: `${descriptionSize} ${descriptionColor}` }, [
+                    usageText(descriptionText),
+                  ]),
+                ],
+              ),
+            ],
+          ),
+        ]),
+        ['import TiltCard from "@/components/common/effects/TiltCard";'],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "사용자가 카드 위에서 마우스를 움직일 때",

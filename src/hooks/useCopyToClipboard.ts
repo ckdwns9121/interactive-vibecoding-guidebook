@@ -1,51 +1,43 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
-interface UseCopyToClipboardResult {
-  /** Whether the content was recently copied */
-  isCopied: boolean;
-  /** Copy function that returns success status */
-  copy: (text: string) => Promise<boolean>;
-  /** Manually reset the copied state */
-  reset: () => void;
-  /** Error if copy failed */
-  error: Error | null;
-}
-
-/**
- * Custom hook for copying text to clipboard
- * Handles the isCopied state with automatic reset
- */
-export function useCopyToClipboard(resetDelayMs: number = 2000): UseCopyToClipboardResult {
+export function useCopyToClipboard(resetDelayMs = 2000) {
   const [isCopied, setIsCopied] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-
-  const copy = useCallback(
-    async (text: string): Promise<boolean> => {
-      try {
-        await navigator.clipboard.writeText(text);
-        setIsCopied(true);
-        setError(null);
-
-        if (resetDelayMs > 0) {
-          setTimeout(() => setIsCopied(false), resetDelayMs);
-        }
-
-        return true;
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to copy"));
-        setIsCopied(false);
-        return false;
-      }
-    },
-    [resetDelayMs]
-  );
-
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
   const reset = useCallback(() => {
+    if (timer.current) clearTimeout(timer.current);
     setIsCopied(false);
     setError(null);
   }, []);
-
-  return { isCopied, copy, reset, error };
+  const copy = useCallback(
+    async (text: string): Promise<boolean> => {
+      if (timer.current) clearTimeout(timer.current);
+      try {
+        await navigator.clipboard.writeText(text);
+        if (mounted.current) {
+          setIsCopied(true);
+          setError(null);
+          if (resetDelayMs > 0) timer.current = setTimeout(() => setIsCopied(false), resetDelayMs);
+        }
+        return true;
+      } catch (err) {
+        if (mounted.current) {
+          setError(err instanceof Error ? err : new Error("Copy failed"));
+          setIsCopied(false);
+        }
+        return false;
+      }
+    },
+    [resetDelayMs],
+  );
+  return { isCopied, error, copy, reset };
 }
-
 export default useCopyToClipboard;

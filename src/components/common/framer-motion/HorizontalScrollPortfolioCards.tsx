@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { CardItem } from "@/types/card";
 import Image from "next/image";
 
 interface HorizontalScrollPortfolioCardsProps {
+  /** 표시할 카드 배열입니다. 각 항목에 id, title, description, image를 지정합니다. */
   cards: CardItem[];
+  /** 전체 스크롤 구간을 감싸는 바깥 컨테이너에 추가할 CSS 클래스입니다. */
   className?: string;
 }
 
@@ -18,16 +20,36 @@ interface HorizontalScrollPortfolioCardsProps {
  * - 마지막 카드 도달 시 다음 섹션으로 자연스러운 전환
  * - 반응형 디자인 지원
  */
-export default function HorizontalScrollPortfolioCards({ cards, className = "" }: HorizontalScrollPortfolioCardsProps) {
+export default function HorizontalScrollPortfolioCards({
+  cards,
+  className = "",
+}: HorizontalScrollPortfolioCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [travel, setTravel] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+    const measure = () => setTravel(Math.max(0, track.scrollWidth - viewport.clientWidth));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [cards]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  // 가로 스크롤 애니메이션 - 모든 카드가 완전히 보이도록 범위 확장
-  const x = useTransform(scrollYProgress, [0.05, 0.95], ["10%", "-85%"]);
+  // 실제 트랙 길이를 사용해 마지막 카드까지 이동합니다.
+  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+  useMotionValueEvent(scrollYProgress, "change", (value) => setProgress(Math.round(value * 100)));
 
   // 배경 dot 입체감 효과
   const dotScale = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
@@ -37,7 +59,10 @@ export default function HorizontalScrollPortfolioCards({ cards, className = "" }
     <div ref={containerRef} className={`relative ${className}`}>
       {/* 고정된 스크롤 섹션 - 높이를 길게 설정하여 스크롤 공간 확보 */}
       <div className="h-[500vh] relative">
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden relative bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+        <div
+          ref={viewportRef}
+          className="sticky top-0 h-screen flex items-center overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-cyan-50"
+        >
           {/* 배경 dot 패턴 */}
           <motion.div
             style={{
@@ -52,7 +77,7 @@ export default function HorizontalScrollPortfolioCards({ cards, className = "" }
 
           {/* 가로 스크롤되는 카드 컨테이너 */}
           <div className="w-full h-full flex items-center justify-start overflow-hidden">
-            <motion.div style={{ x }} className="flex items-center h-full">
+            <motion.div ref={trackRef} style={{ x }} className="flex items-center h-full w-max shrink-0">
               <div className="flex items-center gap-8 md:gap-12 pl-8 md:pl-16 pr-8 md:pr-16">
                 {/* 제목 섹션 - 카드 왼쪽에 배치 */}
                 <div className="flex-shrink-0 w-80 md:w-96 h-96 flex flex-col justify-center text-left">
@@ -78,9 +103,7 @@ export default function HorizontalScrollPortfolioCards({ cards, className = "" }
                   <div className="mt-8">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-sm text-gray-500">진행률</span>
-                      <span className="text-sm font-bold text-indigo-600">
-                        {Math.round(scrollYProgress.get() * 100)}%
-                      </span>
+                      <span className="text-sm font-bold text-indigo-600">{progress}%</span>
                     </div>
                     <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <motion.div
@@ -108,6 +131,7 @@ export default function HorizontalScrollPortfolioCards({ cards, className = "" }
                         src={card.image}
                         alt={card.title}
                         fill
+                        sizes="(min-width: 768px) 384px, 320px"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute top-4 right-4">
@@ -150,8 +174,18 @@ export default function HorizontalScrollPortfolioCards({ cards, className = "" }
                 >
                   <div className="text-center space-y-6">
                     <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-bold">포트폴리오 완료</h3>

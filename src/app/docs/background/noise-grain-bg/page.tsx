@@ -1,5 +1,5 @@
 "use client";
-import noiseGrainBGCode from "@/components/common/framer-motion/background/noise-grain-bg/NoiseGrainBG.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import NoiseGrainBG from "@/components/common/framer-motion/background/noise-grain-bg/NoiseGrainBG";
@@ -8,41 +8,9 @@ import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumb
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-import {
-  NOISE_GRAIN_DEFAULTS,
-  BLEND_MODE_OPTIONS,
-  BG_COLOR_PRESETS,
-} from "./constants";
+import { NOISE_GRAIN_DEFAULTS, BLEND_MODE_OPTIONS, BG_COLOR_PRESETS } from "./constants";
 
 // Usage 예제 코드
-const usageExample = `import NoiseGrainBG from "@/components/common/framer-motion/background/noise-grain-bg/NoiseGrainBG";
-
-// 기본 사용법
-<NoiseGrainBG>
-  <div className="h-64 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
-    <h1 className="text-white text-4xl font-bold">NOISE GRAIN</h1>
-  </div>
-</NoiseGrainBG>
-
-// 커스텀 설정
-<NoiseGrainBG
-  opacity={0.2}
-  baseFrequency={0.8}
-  numOctaves={6}
-  speed={15}
-  blendMode="soft-light"
->
-  <div className="h-96 bg-gradient-to-br from-indigo-900 to-purple-900 p-8">
-    <p className="text-white">콘텐츠 위에 필름 그레인 오버레이</p>
-  </div>
-</NoiseGrainBG>
-
-// 애니메이션 비활성화 (정적 그레인)
-<NoiseGrainBG animate={false} opacity={0.1}>
-  <div className="h-48 bg-black flex items-center justify-center">
-    <p className="text-white">정적 그레인 배경</p>
-  </div>
-</NoiseGrainBG>`;
 
 export default function NoiseGrainBGPage() {
   // 컨트롤 상태
@@ -86,8 +54,37 @@ export default function NoiseGrainBGPage() {
           </div>
         </NoiseGrainBG>
       }
-      usage={usageExample}
-      code={noiseGrainBGCode}
+      usage={generateUsage(
+        usageElement(
+          "NoiseGrainBG",
+          {
+            opacity: opacity,
+            baseFrequency: baseFrequency,
+            numOctaves: numOctaves,
+            animate: animate,
+            speed: speed,
+            blendMode: blendMode,
+          },
+          [
+            usageElement(
+              "div",
+              {
+                className: `h-64 bg-gradient-to-br ${bgGradient} flex items-center justify-center rounded-lg`,
+              },
+              [
+                usageElement(
+                  "h2",
+                  { className: "text-white text-3xl md:text-5xl font-bold tracking-wider select-none" },
+                  [usageText("NOISE GRAIN")],
+                ),
+              ],
+            ),
+          ],
+        ),
+        [
+          'import NoiseGrainBG from "@/components/common/framer-motion/background/noise-grain-bg/NoiseGrainBG";',
+        ],
+      )}
       controls={
         <>
           <RangeWithNumber

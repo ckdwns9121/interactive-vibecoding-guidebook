@@ -1,51 +1,14 @@
 "use client";
-import scrollMarqueeTextCode from "@/components/common/framer-motion/typography/ScrollMarqueeText.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import ScrollMarqueeText from "@/components/common/framer-motion/typography/ScrollMarqueeText";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { TextAreaField } from "@/components/common/docs-controls/TextAreaField";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-
-const usageExample = `import ScrollMarqueeText from "@/components/common/framer-motion/typography/ScrollMarqueeText";
-
-// 기본 사용법
-<ScrollMarqueeText
-  texts={["Let's Dive Into This Tutorial", "Take It Easy!", "Don't Worry Let's Code", "Happy Coding"]}
-/>
-
-// 커스텀 설정
-<ScrollMarqueeText
-  texts={["Custom", "Marquee", "Text"]}
-  baseSpeed={80}
-  fontSize="clamp(2rem, 4vw, 4rem)"
-  color="#3b82f6"
-  backgroundColor="#1f2937"
-  direction={false}
-  className="rounded-lg p-4"
-/>
-
-// 오른쪽 방향 마퀴
-<ScrollMarqueeText
-  texts={["Right", "Direction", "Marquee"]}
-  baseSpeed={60}
-  direction={true}
-  color="#ef4444"
-  className="bg-red-500 p-2 rounded"
-/>
-
-// 빠른 속도 마퀴
-<ScrollMarqueeText
-  texts={["Fast", "Speed", "Animation"]}
-  baseSpeed={120}
-  fontSize="clamp(1.5rem, 3vw, 3rem)"
-  color="#22c55e"
-  className="bg-green-500 p-3 rounded-md"
-/>`;
 
 const FONT_SIZE_OPTIONS = [
   { value: "clamp(1rem, 2vw, 2rem)", label: "Small (clamp(1rem, 2vw, 2rem))" },
@@ -87,85 +50,87 @@ export default function ScrollMarqueePage() {
   const [direction, setDirection] = useState(false);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <TextAreaField
-            label="Texts"
-            description="마키에 표시될 텍스트 (줄바꿈으로 구분)"
-            value={textsToString(texts)}
-            onChange={(value) => setTexts(stringToTexts(value))}
-            rows={4}
-            placeholder="각 줄에 하나씩 텍스트를 입력하세요"
-          />
-          <RangeWithNumber
-            label="Base Speed"
-            description="기본 스크롤 속도"
-            value={baseSpeed}
-            onChange={setBaseSpeed}
-            min={10}
-            max={200}
-          />
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기 (CSS 단위)"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <ColorField label="Text Color" description="텍스트 색상" value={color} onChange={setColor} />
-          <SelectField
-            label="Background Color"
-            description="배경 색상"
-            value={backgroundColor}
-            onChange={setBackgroundColor}
-            options={BACKGROUND_COLOR_OPTIONS}
-          />
-          <ControlField label="Direction" description="스크롤 방향">
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="direction"
-                  checked={!direction}
-                  onChange={() => setDirection(false)}
-                  className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
-                />
-                <span className="text-sm text-gray-200">← 왼쪽</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="direction"
-                  checked={direction}
-                  onChange={() => setDirection(true)}
-                  className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
-                />
-                <span className="text-sm text-gray-200">오른쪽 →</span>
-              </label>
-            </div>
-          </ControlField>
-        </div>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <TextAreaField
+          label="Texts"
+          description="마키에 표시될 텍스트 (줄바꿈으로 구분)"
+          value={textsToString(texts)}
+          onChange={(value) => setTexts(stringToTexts(value))}
+          rows={4}
+          placeholder="각 줄에 하나씩 텍스트를 입력하세요"
+        />
+        <RangeWithNumber
+          label="Base Speed"
+          description="기본 스크롤 속도"
+          value={baseSpeed}
+          onChange={setBaseSpeed}
+          min={10}
+          max={200}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기 (CSS 단위)"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <ColorField label="Text Color" description="텍스트 색상" value={color} onChange={setColor} />
+        <SelectField
+          label="Background Color"
+          description="배경 색상"
+          value={backgroundColor}
+          onChange={setBackgroundColor}
+          options={BACKGROUND_COLOR_OPTIONS}
+        />
+        <ControlField label="Direction" description="스크롤 방향">
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="direction"
+                checked={!direction}
+                onChange={() => setDirection(false)}
+                className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
+              />
+              <span className="text-sm text-gray-200">← 왼쪽</span>
+            </label>
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="direction"
+                checked={direction}
+                onChange={() => setDirection(true)}
+                className="w-4 h-4 text-blue-600 border-gray-600 focus:ring-blue-500 focus:ring-2 bg-black/20"
+              />
+              <span className="text-sm text-gray-200">오른쪽 →</span>
+            </label>
+          </div>
+        </ControlField>
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={() => {
-              setTexts(["Let's Dive Into This Tutorial", "Take It Easy!", "Don't Worry Let's Code", "Happy Coding"]);
-              setBaseSpeed(50);
-              setFontSize("clamp(2.5rem, 5vw, 5rem)");
-              setColor("#ffffff");
-              setBackgroundColor("transparent");
-              setDirection(false);
-            }}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
-          >
-            Reset to Default
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => {
+            setTexts([
+              "Let's Dive Into This Tutorial",
+              "Take It Easy!",
+              "Don't Worry Let's Code",
+              "Happy Coding",
+            ]);
+            setBaseSpeed(50);
+            setFontSize("clamp(2.5rem, 5vw, 5rem)");
+            setColor("#ffffff");
+            setBackgroundColor("transparent");
+            setDirection(false);
+          }}
+          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+        >
+          Reset to Default
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -191,8 +156,31 @@ export default function ScrollMarqueePage() {
             </div>
           </div>
         }
-        usage={usageExample}
-        code={scrollMarqueeTextCode}
+        usage={generateUsage(
+          usageElement(
+            "div",
+            {
+              className:
+                "relative h-[60vh] border-none bg-gradient-to-b from-gray-900 to-gray-800 bg-cover bg-center no-repeat shadow-lg overflow-hidden",
+            },
+            [
+              usageElement("div", { className: "w-full h-full flex items-center justify-center" }, [
+                usageElement("div", { className: "w-full max-w-4xl mx-auto px-4" }, [
+                  usageElement("ScrollMarqueeText", {
+                    texts: texts,
+                    baseSpeed: baseSpeed,
+                    fontSize: fontSize,
+                    color: color,
+                    backgroundColor: backgroundColor,
+                    direction: direction,
+                    className: "w-full",
+                  }),
+                ]),
+              ]),
+            ],
+          ),
+          ['import ScrollMarqueeText from "@/components/common/framer-motion/typography/ScrollMarqueeText";'],
+        )}
         controlPanel={controlPanel}
         idea={{
           when: "컴포넌트가 마운트되거나 스크롤 이벤트가 발생할 때",
@@ -209,7 +197,12 @@ export default function ScrollMarqueePage() {
           <div>
             <div className="relative rotate-5 transform bg-red-500">
               <ScrollMarqueeText
-                texts={["Let's Dive Into This Tutorial", "Take It Easy!", "Don't Worry Let's Code", "Happy Coding"]}
+                texts={[
+                  "Let's Dive Into This Tutorial",
+                  "Take It Easy!",
+                  "Don't Worry Let's Code",
+                  "Happy Coding",
+                ]}
                 baseSpeed={50}
                 fontSize="clamp(2.5rem, 5vw, 5rem)"
                 color="#fff"
@@ -218,7 +211,12 @@ export default function ScrollMarqueePage() {
             </div>
             <div className="relative rotate-5 transform bg-orange-500">
               <ScrollMarqueeText
-                texts={["Let's Dive Into This Tutorial", "Take It Easy!", "Don't Worry Let's Code", "Happy Coding"]}
+                texts={[
+                  "Let's Dive Into This Tutorial",
+                  "Take It Easy!",
+                  "Don't Worry Let's Code",
+                  "Happy Coding",
+                ]}
                 baseSpeed={50}
                 fontSize="clamp(2.5rem, 5vw, 5rem)"
                 color="#fff"

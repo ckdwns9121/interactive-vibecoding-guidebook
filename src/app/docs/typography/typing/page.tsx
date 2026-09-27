@@ -1,5 +1,5 @@
 "use client";
-import typingTextCode from "@/components/common/framer-motion/typography/typing-text/TypingText.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import TypingText from "@/components/common/framer-motion/typography/typing-text/TypingText";
@@ -10,31 +10,6 @@ import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-
-const usageExample = `import TypingText from "@/components/common/framer-motion/typography/typing-text/TypingText";
-
-// 기본 사용법
-<TypingText text="안녕하세요!" />
-
-// 커스텀 설정
-<TypingText
-  text="타이핑 애니메이션입니다."
-  speed={150}
-  delay={500}
-  className="text-2xl font-bold"
-  cursorChar="█"
-  showCursor={true}
-  loop={true}
-  cursorClassName="text-blue-500"
-  textClassName="text-white"
-/>
-
-// 간단한 설정
-<TypingText
-  text="Hello World!"
-  speed={100}
-  className="text-xl"
-/>`;
 
 const TEXT_COLOR_OPTIONS = [
   { value: "inherit", label: "inherit" },
@@ -88,7 +63,12 @@ export default function TypographyAnimationPage() {
       title="타이핑 애니메이션"
       description="텍스트가 타이핑되는 애니메이션 효과를 적용합니다."
       preview={
-        <div className="min-h-32 md:min-h-40 flex items-center justify-center">
+        <div
+          className="min-h-32 md:min-h-40 flex items-center justify-center"
+          style={
+            { "--typing-text-color": textColor, "--typing-cursor-color": cursorColor } as React.CSSProperties
+          }
+        >
           <TypingText
             key={`${text}-${typingSpeed}-${delay}-${cursorType}-${showCursor}-${loop}`}
             text={text}
@@ -98,13 +78,37 @@ export default function TypographyAnimationPage() {
             cursorChar={cursorType}
             showCursor={showCursor}
             loop={loop}
-            cursorClassName={`text-[${cursorColor}]`}
-            textClassName={textColor === "inherit" ? "" : `text-[${textColor}]`}
+            cursorClassName="text-[var(--typing-cursor-color)]"
+            textClassName="text-[var(--typing-text-color)]"
           />
         </div>
       }
-      usage={usageExample}
-      code={typingTextCode}
+      usage={generateUsage(
+        usageElement(
+          "div",
+          {
+            className: "min-h-32 md:min-h-40 flex items-center justify-center",
+            style: {
+              "--typing-text-color": textColor,
+              "--typing-cursor-color": cursorColor,
+            } as React.CSSProperties,
+          },
+          [
+            usageElement("TypingText", {
+              text: text,
+              speed: typingSpeed,
+              delay: delay,
+              className: VARIANT_CLASSES[variant] ?? VARIANT_CLASSES.h3,
+              cursorChar: cursorType,
+              showCursor: showCursor,
+              loop: loop,
+              cursorClassName: "text-[var(--typing-cursor-color)]",
+              textClassName: "text-[var(--typing-text-color)]",
+            }),
+          ],
+        ),
+        ['import TypingText from "@/components/common/framer-motion/typography/typing-text/TypingText";'],
+      )}
       controls={
         <>
           <TextAreaField
@@ -131,7 +135,12 @@ export default function TypographyAnimationPage() {
             min={0}
             max={3000}
           />
-          <ColorField label="Cursor Color" description="커서 색상" value={cursorColor} onChange={setCursorColor} />
+          <ColorField
+            label="Cursor Color"
+            description="커서 색상"
+            value={cursorColor}
+            onChange={setCursorColor}
+          />
           <SelectField
             label="Text Color"
             description="텍스트 색상"

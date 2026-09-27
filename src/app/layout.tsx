@@ -2,18 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: "인터랙티브 바이브 코딩 가이드북",
   description:
-    "디자인 없이도, 누구나 쉽게 차별화된 웹을 만들 수 있는 AI 기반 웹 빌더. 반응형, 인터랙션, 퍼포먼스까지 한 번에!",
+    "React 인터랙션 컴포넌트를 미리 보고 설정을 조절하세요. 소스 코드, Props, 설치 방법과 AI 프롬프트를 제공하는 가이드북입니다.",
   keywords: [
-    "AI 웹빌더",
+    "React 컴포넌트",
     "스마트 포트폴리오",
     "반응형 웹",
     "차별화된 웹",
-    "노코드",
+    "인터랙션 가이드북",
     "웹디자인",
     "웹퍼블리싱",
     "인터랙션",
@@ -40,9 +38,6 @@ export const metadata: Metadata = {
     title: "인터랙티브 바이브 코딩 가이드북",
     description: "인터랙션 바이브코딩 가이드북입니다.",
     images: ["/main.png"],
-  },
-  alternates: {
-    canonical: "/",
   },
   robots: {
     index: true,

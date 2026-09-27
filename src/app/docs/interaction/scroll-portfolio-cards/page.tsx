@@ -1,44 +1,42 @@
 "use client";
 
+import { useState } from "react";
+import ComponentDocPage from "@/app/docs/components/ComponentDocPage";
 import HorizontalScrollPortfolioCards from "@/components/common/framer-motion/HorizontalScrollPortfolioCards";
-import Title from "@/app/docs/components/Title";
-import { SCROLL_PORTFOLIO_CARDS_INFO } from "./constants";
+import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { sampleCards } from "@/data/sampleCards";
 
 export default function ScrollPortfolioCardsPage() {
+  const [count, setCount] = useState(3);
+  const cards = sampleCards.slice(0, count);
   return (
-    <div className="min-h-screen">
-      <Title>{SCROLL_PORTFOLIO_CARDS_INFO.title}</Title>
-      <hr className="my-4" />
-      {/* 제목 및 설명 섹션 */}
-      <section className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700">
-        <div className="text-center text-white px-4">
-          <Title>{SCROLL_PORTFOLIO_CARDS_INFO.title}</Title>
-          <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            {SCROLL_PORTFOLIO_CARDS_INFO.description}
-          </p>
-          <div className="text-sm text-slate-400">스크롤하여 가로 스크롤 포트폴리오를 체험해보세요</div>
+    <ComponentDocPage
+      title="Scroll Portfolio Cards"
+      description="세로 스크롤을 가로 이동으로 바꿔 프로젝트 카드를 차례로 보여줍니다. 미리보기 영역을 따라 스크롤해 전체 카드를 살펴보세요."
+      previewMode="scroll"
+      preview={
+        <div>
+          <HorizontalScrollPortfolioCards cards={cards} />
+          <section className="flex h-screen items-center justify-center bg-[#141418] text-white">
+            <h2 className="text-4xl font-semibold">Keep creating.</h2>
+          </section>
         </div>
-      </section>
+      }
+      usage={`import HorizontalScrollPortfolioCards from "@/components/common/framer-motion/HorizontalScrollPortfolioCards";
 
-      {/* 가로 스크롤 포트폴리오 카드 섹션 - DemoContainer 밖으로 이동 */}
-      <HorizontalScrollPortfolioCards cards={sampleCards} className="" />
+// image 경로는 프로젝트의 public 폴더에 있는 이미지로 바꿔주세요.
+const cards = ${JSON.stringify(cards, null, 2)};
 
-      {/* 다음 섹션 */}
-      <section className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600">
-        <div className="text-center text-white">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">다음 섹션</h2>
-          <p className="text-xl md:text-2xl opacity-90">포트폴리오 카드 스크롤이 완료되면 이 섹션으로 이동됩니다.</p>
-        </div>
-      </section>
-
-      {/* 추가 섹션 */}
-      <section className="h-screen flex items-center justify-center bg-gradient-to-br from-emerald-600 to-teal-600">
-        <div className="text-center text-white">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">컴포넌트 완료</h2>
-          <p className="text-xl md:text-2xl opacity-90">가로 스크롤 인터랙션이 완료되었습니다!</p>
-        </div>
-      </section>
-    </div>
+export default function Example() {
+  return <HorizontalScrollPortfolioCards cards={cards} />;
+}`}
+      controls={<RangeWithNumber label="카드 수" min={2} max={5} value={count} onChange={setCount} />}
+      idea={{
+        when: "포트폴리오나 컬렉션을 한 흐름으로 소개할 때",
+        what: "고정된 화면 안에서 카드가 가로로 이동합니다.",
+        how: "cards에 id, title, description, image를 전달합니다. 로컬 이미지는 public 폴더에 배치하세요.",
+      }}
+      prompt="React와 Framer Motion으로 세로 스크롤에 따라 프로젝트 카드가 가로로 이동하는 포트폴리오 섹션을 만들어줘. 각 카드에는 이미지, 제목, 설명을 넣고 마지막 카드 이후에는 다음 섹션으로 이어지게 해줘."
+    />
   );
 }

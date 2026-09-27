@@ -1,5 +1,5 @@
 "use client";
-import glitchTextCode from "@/components/common/framer-motion/typography/glitch-text/GlitchText.tsx?raw";
+import { generateUsage, usageElement, usageText } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import GlitchText from "@/components/common/framer-motion/typography/glitch-text/GlitchText";
@@ -11,41 +11,6 @@ import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { CheckboxField } from "@/components/common/docs-controls/CheckboxField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-
-const usageExample = `import GlitchText from "@/components/common/framer-motion/typography/glitch-text/GlitchText";
-
-// 기본 사용법
-<GlitchText>GLITCH EFFECT</GlitchText>
-
-// 커스텀 설정
-<GlitchText
-  speed={0.3}
-  enableShadows={true}
-  enableOnHover={false}
-  refreshDelay={150}
-  glitchColors={["#ff0040", "#00ffff", "#ff0080", "#0040ff"]}
-  className="text-4xl font-bold"
->
-  고급 글리치 효과
-</GlitchText>
-
-// 호버 시에만 글리치
-<GlitchText
-  enableOnHover={true}
-  speed={0.8}
-  className="text-2xl"
->
-  호버 글리치
-</GlitchText>
-
-// 그림자 없이 글리치
-<GlitchText
-  enableShadows={false}
-  speed={0.5}
-  className="text-3xl"
->
-  미니멀 글리치
-</GlitchText>`;
 
 const VARIANT_OPTIONS = [
   { value: "h1", label: "H1 - Heading 1" },
@@ -82,7 +47,14 @@ export default function GlitchTextPage() {
   return (
     <ComponentDocPage
       title={
-        <TextScramble text="Glitch Text." speed={30} delay={0} loop={false} pauseTime={1000} revealSpeed={60} />
+        <TextScramble
+          text="Glitch Text."
+          speed={30}
+          delay={0}
+          loop={false}
+          pauseTime={1000}
+          revealSpeed={60}
+        />
       }
       description="텍스트에 사이버펑크 스타일의 글리치 효과를 적용하여 디지털 왜곡 현상을 시뮬레이션합니다."
       preview={
@@ -100,8 +72,23 @@ export default function GlitchTextPage() {
           </GlitchText>
         </div>
       }
-      usage={usageExample}
-      code={glitchTextCode}
+      usage={generateUsage(
+        usageElement("div", { className: "min-h-32 md:min-h-40 flex items-center justify-center" }, [
+          usageElement(
+            "GlitchText",
+            {
+              className: VARIANT_CLASSES[variant] ?? VARIANT_CLASSES.h3,
+              speed: speed,
+              enableShadows: enableShadows,
+              enableOnHover: enableOnHover,
+              refreshDelay: refreshDelay,
+              glitchColors: glitchColors,
+            },
+            [usageText(text)],
+          ),
+        ]),
+        ['import GlitchText from "@/components/common/framer-motion/typography/glitch-text/GlitchText";'],
+      )}
       controls={
         <>
           <TextAreaField
@@ -129,11 +116,37 @@ export default function GlitchTextPage() {
             min={50}
             max={1000}
           />
-          <ColorField label="Glitch Color 1" description="첫 번째 글리치 색상" value={glitchColor1} onChange={setGlitchColor1} />
-          <ColorField label="Glitch Color 2" description="두 번째 글리치 색상" value={glitchColor2} onChange={setGlitchColor2} />
-          <ColorField label="Glitch Color 3" description="세 번째 글리치 색상" value={glitchColor3} onChange={setGlitchColor3} />
-          <ColorField label="Glitch Color 4" description="네 번째 글리치 색상" value={glitchColor4} onChange={setGlitchColor4} />
-          <SelectField label="Variant" description="Typography 변형" value={variant} onChange={setVariant} options={VARIANT_OPTIONS} />
+          <ColorField
+            label="Glitch Color 1"
+            description="첫 번째 글리치 색상"
+            value={glitchColor1}
+            onChange={setGlitchColor1}
+          />
+          <ColorField
+            label="Glitch Color 2"
+            description="두 번째 글리치 색상"
+            value={glitchColor2}
+            onChange={setGlitchColor2}
+          />
+          <ColorField
+            label="Glitch Color 3"
+            description="세 번째 글리치 색상"
+            value={glitchColor3}
+            onChange={setGlitchColor3}
+          />
+          <ColorField
+            label="Glitch Color 4"
+            description="네 번째 글리치 색상"
+            value={glitchColor4}
+            onChange={setGlitchColor4}
+          />
+          <SelectField
+            label="Variant"
+            description="Typography 변형"
+            value={variant}
+            onChange={setVariant}
+            options={VARIANT_OPTIONS}
+          />
           <ControlField label="Enable Shadows" description="글리치 그림자 효과 활성화">
             <CheckboxField label="그림자 효과 사용" checked={enableShadows} onChange={setEnableShadows} />
           </ControlField>

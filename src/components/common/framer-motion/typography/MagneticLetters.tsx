@@ -10,13 +10,16 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
  * - 예시: <MagneticLetters text="MAGNETIC TEXT" />
  */
 interface MagneticLettersProps {
+  /** 마우스에 반응하도록 글자 단위로 나눌 문자열입니다. */
   text: string;
   strength?: number; // 자석 강도 (기본 40)
   threshold?: number; // 영향 범위 배수 (기본 6)
   stiffness?: number; // 스프링 강성 (기본 400)
   damping?: number; // 스프링 댐핑 (기본 30)
   textColor?: string; // 텍스트 색상
+  /** 글자들을 감싸는 inline-flex 요소에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 글자들을 감싸는 요소에 적용할 인라인 스타일입니다. */
   style?: React.CSSProperties;
 }
 

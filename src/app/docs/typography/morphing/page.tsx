@@ -1,51 +1,14 @@
 "use client";
-import morphingTextCode from "@/components/common/framer-motion/typography/morphing-text/MorphingText.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import MorphingText from "@/components/common/framer-motion/typography/morphing-text/MorphingText";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { TextAreaField } from "@/components/common/docs-controls/TextAreaField";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { MORPHING_DEFAULTS, FONT_SIZE_OPTIONS, FONT_WEIGHT_OPTIONS, COLOR_PRESETS } from "./constants";
-
-const usageExample = `import MorphingText from "@/components/common/framer-motion/typography/morphing-text/MorphingText";
-
-// 기본 사용법
-<MorphingText texts={["디자인 없이도", "차별화된 웹을", "누구나 쉽게"]} />
-
-// 커스텀 설정
-<MorphingText
-  texts={["Why", "is", "this", "cool?"]}
-  morphTime={1.5}
-  cooldownTime={0.8}
-  color="#7c3aed"
-  className="text-4xl font-bold"
-/>
-
-// 빠른 모프링
-<MorphingText
-  texts={["빠른", "변형", "효과"]}
-  morphTime={0.5}
-  cooldownTime={0.2}
-  color="#dc2626"
-  className="text-2xl"
-/>
-
-// 긴 텍스트 모프링
-<MorphingText
-  texts={[
-    "긴 문장도",
-    "자연스럽게",
-    "변형됩니다"
-  ]}
-  morphTime={2}
-  cooldownTime={1}
-  color="#059669"
-  className="text-3xl font-semibold"
-/>`;
 
 // 텍스트 배열을 문자열로 변환/파싱하는 헬퍼 함수
 const textsToString = (texts: string[]) => texts.join("\n");
@@ -60,77 +23,74 @@ export default function MorphingTextPage() {
   const [fontWeight, setFontWeight] = useState(MORPHING_DEFAULTS.fontWeight);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <TextAreaField
-            label="Texts"
-            description="Morphing할 텍스트들 (줄바꿈으로 구분)"
-            value={textsToString(texts)}
-            onChange={(value) => setTexts(stringToTexts(value))}
-            rows={4}
-            placeholder="각 줄에 하나씩 텍스트를 입력하세요"
-          />
-          <RangeWithNumber
-            label="Morph Time"
-            description="변형 애니메이션 시간 (초)"
-            value={morphTime}
-            onChange={setMorphTime}
-            min={0.3}
-            max={3}
-            step={0.1}
-          />
-          <RangeWithNumber
-            label="Cooldown Time"
-            description="다음 변형까지 대기 시간 (초)"
-            value={cooldownTime}
-            onChange={setCooldownTime}
-            min={0.1}
-            max={3}
-            step={0.1}
-          />
-          <ColorField
-            label="Text Color"
-            description="텍스트 색상"
-            value={color}
-            onChange={setColor}
-            presets={COLOR_PRESETS}
-          />
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-        </div>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <TextAreaField
+          label="Texts"
+          description="Morphing할 텍스트들 (줄바꿈으로 구분)"
+          value={textsToString(texts)}
+          onChange={(value) => setTexts(stringToTexts(value))}
+          rows={4}
+          placeholder="각 줄에 하나씩 텍스트를 입력하세요"
+        />
+        <RangeWithNumber
+          label="Morph Time"
+          description="변형 애니메이션 시간 (초)"
+          value={morphTime}
+          onChange={setMorphTime}
+          min={0.3}
+          max={3}
+          step={0.1}
+        />
+        <RangeWithNumber
+          label="Cooldown Time"
+          description="다음 변형까지 대기 시간 (초)"
+          value={cooldownTime}
+          onChange={setCooldownTime}
+          min={0.1}
+          max={3}
+          step={0.1}
+        />
+        <ColorField
+          label="Text Color"
+          description="텍스트 색상"
+          value={color}
+          onChange={setColor}
+          presets={COLOR_PRESETS}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setTexts(MORPHING_DEFAULTS.texts);
-              setMorphTime(MORPHING_DEFAULTS.morphTime);
-              setCooldownTime(MORPHING_DEFAULTS.cooldownTime);
-              setColor(MORPHING_DEFAULTS.color);
-              setFontSize(MORPHING_DEFAULTS.fontSize);
-              setFontWeight(MORPHING_DEFAULTS.fontWeight);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setTexts(MORPHING_DEFAULTS.texts);
+            setMorphTime(MORPHING_DEFAULTS.morphTime);
+            setCooldownTime(MORPHING_DEFAULTS.cooldownTime);
+            setColor(MORPHING_DEFAULTS.color);
+            setFontSize(MORPHING_DEFAULTS.fontSize);
+            setFontWeight(MORPHING_DEFAULTS.fontWeight);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -149,8 +109,20 @@ export default function MorphingTextPage() {
           />
         </div>
       }
-      usage={usageExample}
-      code={morphingTextCode}
+      usage={generateUsage(
+        usageElement("div", { className: "h-48 flex items-center justify-center" }, [
+          usageElement("MorphingText", {
+            texts: texts,
+            morphTime: morphTime,
+            cooldownTime: cooldownTime,
+            color: color,
+            className: `${fontSize} ${fontWeight}`,
+          }),
+        ]),
+        [
+          'import MorphingText from "@/components/common/framer-motion/typography/morphing-text/MorphingText";',
+        ],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "컴포넌트가 마운트되거나 텍스트 배열이 변경될 때",

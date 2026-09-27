@@ -29,7 +29,9 @@ interface GlassmorphismCardProps {
   width?: string;
   /** 높이 (Tailwind 클래스) */
   height?: string;
+  /** 유리 카드 컨테이너에 추가할 CSS 클래스입니다. */
   className?: string;
+  /** 유리 카드 내부에 표시할 React 콘텐츠입니다. */
   children?: ReactNode;
 }
 
@@ -102,14 +104,13 @@ export default function GlassmorphismCard({
         }
       });
     },
-    [enableReflection, enableTilt, maxTilt, reflectionSize, reflectionOpacity]
+    [enableReflection, enableTilt, maxTilt, reflectionSize, reflectionOpacity],
   );
 
   const handleMouseLeave = useCallback(() => {
     const card = cardRef.current;
     if (card && enableTilt) {
-      card.style.transform =
-        "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+      card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
     }
     if (reflectionRef.current) {
       reflectionRef.current.style.opacity = "0";
@@ -174,8 +175,7 @@ export default function GlassmorphismCard({
         className="pointer-events-none absolute inset-0 z-[2] rounded-2xl"
         style={{
           background: `linear-gradient(135deg, rgba(255,255,255,${edgeHighlight * 0.6}), rgba(255,255,255,${edgeHighlight * 0.1}) 50%, rgba(255,255,255,0.02))`,
-          WebkitMask:
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
           padding: "1px",
@@ -190,12 +190,7 @@ export default function GlassmorphismCard({
           style={{ opacity: noiseOpacity }}
         >
           <filter id="glass-noise">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.8"
-              numOctaves="4"
-              stitchTiles="stitch"
-            />
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
             <feColorMatrix type="saturate" values="0" />
           </filter>
           <rect width="100%" height="100%" filter="url(#glass-noise)" />

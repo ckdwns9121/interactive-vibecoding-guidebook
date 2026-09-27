@@ -3,15 +3,25 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 interface ZoomScrollBgProps {
+  /** 확대할 이미지의 URL 또는 public 폴더 기준 경로입니다. */
   imageSrc?: string;
+  /** 이미지의 대체 텍스트입니다. */
   imageAlt?: string;
+  /** 이미지 위에 표시할 제목입니다. */
   title?: string;
+  /** 스크롤 구간 시작 시 이미지의 배율입니다. */
   minScale?: number;
+  /** 스크롤 구간 끝에서 이미지가 도달할 배율입니다. */
   maxScale?: number;
+  /** 확대 배율을 따라가는 스프링의 강성입니다. */
   stiffness?: number;
+  /** 확대 스프링의 감쇠 계수입니다. 값이 클수록 진동이 빨리 줄어듭니다. */
   damping?: number;
+  /** 확대 스프링에 적용할 질량입니다. */
   mass?: number;
+  /** 컨테이너의 전체 CSS 클래스입니다. 기본 클래스를 대체하므로 위치·높이·overflow도 지정하세요. */
   className?: string;
+  /** 이미지 위 제목 h2 요소에 적용할 CSS 클래스입니다. */
   titleClassName?: string;
 }
 

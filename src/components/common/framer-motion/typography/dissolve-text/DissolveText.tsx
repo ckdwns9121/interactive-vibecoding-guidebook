@@ -2,7 +2,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface DissolveTextProps {
+  /** 흩어지며 사라지는 필터를 적용할 문자열입니다. */
   text: string;
+  /** 텍스트의 CSS 색상입니다. */
   color?: string;
   /** 디졸브 진행도 (0: 온전, 1: 완전히 흩어짐). 외부에서 제어할 때 사용 */
   progress?: number;
@@ -14,6 +16,7 @@ interface DissolveTextProps {
   numOctaves?: number;
   /** 디졸브 애니메이션 시간 (ms) */
   duration?: number;
+  /** 텍스트 영역의 글꼴 크기와 굵기 등을 설정할 CSS 클래스입니다. */
   className?: string;
 }
 
@@ -133,7 +136,11 @@ const DissolveText: React.FC<DissolveTextProps> = ({
             />
             {/* 2) 노이즈 밝기를 기준으로 alpha를 sigmoid 곡선으로 부드럽게 전환 */}
             <feComponentTransfer in="noise" result="mask">
-              <feFuncA ref={transferRef} type="table" tableValues="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1" />
+              <feFuncA
+                ref={transferRef}
+                type="table"
+                tableValues="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+              />
             </feComponentTransfer>
             {/* 3) 마스크와 원본을 합성 — alpha가 0인 영역이 사라짐 */}
             <feComposite in="SourceGraphic" in2="mask" operator="in" />

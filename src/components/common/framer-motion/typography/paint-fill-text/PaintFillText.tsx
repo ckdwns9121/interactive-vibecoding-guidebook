@@ -3,6 +3,7 @@
 import styles from "./PaintFillText.module.css";
 
 interface PaintFillTextProps {
+  /** 외곽선과 물감 채우기 레이어에 함께 표시할 문자열입니다. */
   text: string;
   duration?: number; // 애니메이션 지속시간 (초)
   delay?: number; // 애니메이션 시작 지연시간 (초)

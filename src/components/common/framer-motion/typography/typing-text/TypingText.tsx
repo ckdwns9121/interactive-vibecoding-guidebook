@@ -4,9 +4,11 @@ import { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHand
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TypingTextProps {
+  /** 한 글자씩 표시할 원본 문자열입니다. */
   text: string;
   speed?: number; // 타이핑 속도 (밀리초)
   delay?: number; // 시작 지연 시간 (밀리초)
+  /** 타이핑 텍스트와 커서를 감싸는 컨테이너에 추가할 CSS 클래스입니다. */
   className?: string;
   onComplete?: () => void; // 타이핑 완료 시 콜백
   showCursor?: boolean; // 커서 표시 여부
@@ -48,7 +50,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
       onPause,
       onResume,
     },
-    ref
+    ref,
   ) => {
     const [displayText, setDisplayText] = useState("");
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,7 +104,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
         resume: resumeTyping,
         restart: restartTyping,
       }),
-      [startTyping, pauseTyping, resumeTyping, restartTyping]
+      [startTyping, pauseTyping, resumeTyping, restartTyping],
     );
 
     // 자동 시작 처리
@@ -190,7 +192,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
         </span>
       </motion.div>
     );
-  }
+  },
 );
 
 TypingText.displayName = "TypingText";

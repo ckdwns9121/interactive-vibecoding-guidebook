@@ -1,39 +1,20 @@
 "use client";
-import magneticLettersCode from "@/components/common/framer-motion/typography/MagneticLetters.tsx?raw";
+import { generateUsage, usageElement } from "@/lib/docs/usage";
 
 import { useState } from "react";
 import { MagneticLetters } from "@/components/common/framer-motion/typography/MagneticLetters";
-import ControlPanelWrapper from "@/components/common/ControlPanelWrapper";
 import ComponentDocPage from "../../components/ComponentDocPage";
 import { RangeWithNumber } from "@/components/common/docs-controls/RangeWithNumber";
 import { ColorField } from "@/components/common/docs-controls/ColorField";
 import { SelectField } from "@/components/common/docs-controls/SelectField";
 import { ControlField } from "@/components/common/docs-controls/ControlField";
-import { MAGNETIC_DEFAULTS, FONT_SIZE_OPTIONS, FONT_WEIGHT_OPTIONS, SPACING_OPTIONS, COLOR_PRESETS } from "./constants";
-
-const usageExample = `import { MagneticLetters } from "@/components/common/framer-motion/typography/MagneticLetters";
-
-// 기본 사용법
-<MagneticLetters text="MAGNETIC TEXT" />
-
-// 커스텀 설정
-<MagneticLetters
-  text="고급 마그네틱 효과"
-  strength={60}
-  threshold={8}
-  stiffness={300}
-  damping={25}
-  textColor="#ff6b6b"
-  className="text-5xl font-bold"
-/>
-
-// 간단한 설정
-<MagneticLetters
-  text="Hello World!"
-  strength={30}
-  textColor="#ffffff"
-  className="text-2xl"
-/>`;
+import {
+  MAGNETIC_DEFAULTS,
+  FONT_SIZE_OPTIONS,
+  FONT_WEIGHT_OPTIONS,
+  SPACING_OPTIONS,
+  COLOR_PRESETS,
+} from "./constants";
 
 export default function MagneticLettersPage() {
   const [text, setText] = useState(MAGNETIC_DEFAULTS.text);
@@ -47,103 +28,100 @@ export default function MagneticLettersPage() {
   const [spacing, setSpacing] = useState(MAGNETIC_DEFAULTS.spacing);
 
   const controlPanel = (
-    <div>
-      <h3 className="text-lg font-semibold text-white mb-4">컨트롤 패널</h3>
-      <ControlPanelWrapper>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <ControlField label="Text" description="마그네틱 효과를 적용할 텍스트">
-            <input
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
-              placeholder="텍스트를 입력하세요"
-            />
-          </ControlField>
-          <RangeWithNumber
-            label="Strength"
-            description="자석 끌림 강도"
-            value={strength}
-            onChange={setStrength}
-            min={0}
-            max={100}
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ControlField label="Text" description="마그네틱 효과를 적용할 텍스트">
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full px-3 py-2 text-sm border border-gray-600 rounded-md bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400"
+            placeholder="텍스트를 입력하세요"
           />
-          <RangeWithNumber
-            label="Threshold"
-            description="영향 범위 배수"
-            value={threshold}
-            onChange={setThreshold}
-            min={1}
-            max={15}
-            step={0.5}
-          />
-          <RangeWithNumber
-            label="Stiffness"
-            description="스프링 강성 (빠르기)"
-            value={stiffness}
-            onChange={setStiffness}
-            min={50}
-            max={1000}
-          />
-          <RangeWithNumber
-            label="Damping"
-            description="스프링 댐핑 (감속)"
-            value={damping}
-            onChange={setDamping}
-            min={5}
-            max={100}
-          />
-          <ColorField
-            label="Text Color"
-            description="텍스트 색상"
-            value={textColor}
-            onChange={setTextColor}
-            presets={COLOR_PRESETS}
-          />
-          <SelectField
-            label="Font Size"
-            description="텍스트 크기"
-            value={fontSize}
-            onChange={setFontSize}
-            options={FONT_SIZE_OPTIONS}
-          />
-          <SelectField
-            label="Font Weight"
-            description="글꼴 두께"
-            value={fontWeight}
-            onChange={setFontWeight}
-            options={FONT_WEIGHT_OPTIONS}
-          />
-          <SelectField
-            label="Letter Spacing"
-            description="글자 간격"
-            value={spacing}
-            onChange={setSpacing}
-            options={SPACING_OPTIONS}
-          />
-        </div>
+        </ControlField>
+        <RangeWithNumber
+          label="Strength"
+          description="자석 끌림 강도"
+          value={strength}
+          onChange={setStrength}
+          min={0}
+          max={100}
+        />
+        <RangeWithNumber
+          label="Threshold"
+          description="영향 범위 배수"
+          value={threshold}
+          onChange={setThreshold}
+          min={1}
+          max={15}
+          step={0.5}
+        />
+        <RangeWithNumber
+          label="Stiffness"
+          description="스프링 강성 (빠르기)"
+          value={stiffness}
+          onChange={setStiffness}
+          min={50}
+          max={1000}
+        />
+        <RangeWithNumber
+          label="Damping"
+          description="스프링 댐핑 (감속)"
+          value={damping}
+          onChange={setDamping}
+          min={5}
+          max={100}
+        />
+        <ColorField
+          label="Text Color"
+          description="텍스트 색상"
+          value={textColor}
+          onChange={setTextColor}
+          presets={COLOR_PRESETS}
+        />
+        <SelectField
+          label="Font Size"
+          description="텍스트 크기"
+          value={fontSize}
+          onChange={setFontSize}
+          options={FONT_SIZE_OPTIONS}
+        />
+        <SelectField
+          label="Font Weight"
+          description="글꼴 두께"
+          value={fontWeight}
+          onChange={setFontWeight}
+          options={FONT_WEIGHT_OPTIONS}
+        />
+        <SelectField
+          label="Letter Spacing"
+          description="글자 간격"
+          value={spacing}
+          onChange={setSpacing}
+          options={SPACING_OPTIONS}
+        />
+      </div>
 
-        {/* 리셋 버튼 */}
-        <div className="mt-6 pt-4 border-t border-gray-700">
-          <button
-            onClick={() => {
-              setText(MAGNETIC_DEFAULTS.text);
-              setStrength(MAGNETIC_DEFAULTS.strength);
-              setThreshold(MAGNETIC_DEFAULTS.threshold);
-              setStiffness(MAGNETIC_DEFAULTS.stiffness);
-              setDamping(MAGNETIC_DEFAULTS.damping);
-              setTextColor(MAGNETIC_DEFAULTS.textColor);
-              setFontSize(MAGNETIC_DEFAULTS.fontSize);
-              setFontWeight(MAGNETIC_DEFAULTS.fontWeight);
-              setSpacing(MAGNETIC_DEFAULTS.spacing);
-            }}
-            className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            기본값으로 리셋
-          </button>
-        </div>
-      </ControlPanelWrapper>
-    </div>
+      {/* 리셋 버튼 */}
+      <div className="mt-6 pt-4 border-t border-gray-700">
+        <button
+          onClick={() => {
+            setText(MAGNETIC_DEFAULTS.text);
+            setStrength(MAGNETIC_DEFAULTS.strength);
+            setThreshold(MAGNETIC_DEFAULTS.threshold);
+            setStiffness(MAGNETIC_DEFAULTS.stiffness);
+            setDamping(MAGNETIC_DEFAULTS.damping);
+            setTextColor(MAGNETIC_DEFAULTS.textColor);
+            setFontSize(MAGNETIC_DEFAULTS.fontSize);
+            setFontWeight(MAGNETIC_DEFAULTS.fontWeight);
+            setSpacing(MAGNETIC_DEFAULTS.spacing);
+          }}
+          className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          기본값으로 리셋
+        </button>
+      </div>
+    </>
   );
 
   return (
@@ -164,8 +142,20 @@ export default function MagneticLettersPage() {
           />
         </div>
       }
-      usage={usageExample}
-      code={magneticLettersCode}
+      usage={generateUsage(
+        usageElement("div", { className: "min-h-32 md:min-h-40 flex items-center justify-center" }, [
+          usageElement("MagneticLetters", {
+            text: text,
+            strength: strength,
+            threshold: threshold,
+            stiffness: stiffness,
+            damping: damping,
+            textColor: textColor,
+            className: `${fontSize} ${fontWeight} ${spacing}`,
+          }),
+        ]),
+        ['import { MagneticLetters } from "@/components/common/framer-motion/typography/MagneticLetters";'],
+      )}
       controlPanel={controlPanel}
       idea={{
         when: "마우스가 텍스트 영역에 접근할 때",

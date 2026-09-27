@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 
 export interface TextScrambleProps {
+  /** 무작위 문자가 바뀐 뒤 최종적으로 표시할 문자열입니다. */
   text: string;
   speed?: number; // 스크램블 속도 (밀리초)
   delay?: number; // 시작 지연 시간 (밀리초)
+  /** 텍스트 컨테이너에 적용할 글꼴 크기, 굵기 등의 CSS 클래스입니다. */
   className?: string;
   onComplete?: () => void; // 스크램블 완료 시 콜백
   loop?: boolean; // 반복 여부
